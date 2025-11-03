@@ -17,3 +17,5 @@ Zeno Micro PC is designed to be developer-friendly, offering a platform for test
 The device also serves as an educational platform, allowing users to explore operating system frameworks, learn app development, and experiment with IoT projects. In the future, it will integrate with TinyML modules to provide basic AI capabilities and further expand its learning and development potential.
 
 Zeno Micro PC supports a 2.8-inch touchscreen display, SD cards up to 32GB, and full Wi-Fi/Bluetooth connectivity, making it a standalone, fully capable computational device suitable for both developers and learners alike.
+## License
+This project is licensed under the MIT License — see the [LICENSE](./LICENSE) file for details.
