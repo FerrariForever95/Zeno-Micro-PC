@@ -24,8 +24,7 @@ def main(ui=None, on_exit=None):
     screen.layer(1, 37, 317, 17, color565(80, 80, 80))
     screen.layer(1, 55, 318, 37, color565(192, 192, 192))
     screen.layer(1, 93, 318, 146, color565(229, 229, 229))
-    screen.layer(3, 95, 313, 70, color565(190, 190, 190))
-    screen.layer(3, 166, 314, 70, color565(193, 193, 193))
+    screen.layer(3, 95, 312, 22, color565(190, 190, 190))
 
     # Create and draw buttons
     buttons = []
