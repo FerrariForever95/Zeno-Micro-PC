@@ -34,7 +34,7 @@ def main(ui=None, on_exit=None):
 
     buttons.append(UIButton(3, 58, 100, 30, label='Install', color=color565(224, 224, 224), text_color=color565(0, 0, 0), margin=5, action=on_button_click))
     buttons.append(UIButton(107, 58, 100, 30, label='Uninstall', color=color565(223, 223, 223), text_color=color565(0, 0, 0), margin=5, action=on_button_click))
-    buttons.append(UIButton(211, 58, 105, 30, label='Search', color=color565(223, 223, 223), text_color=color565(0, 0, 0), margin=5, action=on_button_click))
+    buttons.append(UIButton(211, 58, 105, 30, label='List Apps', color=color565(223, 223, 223), text_color=color565(0, 0, 0), margin=5, action=on_button_click))
 
     for btn in buttons:
         btn.draw(ui)
