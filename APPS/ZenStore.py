@@ -23,7 +23,7 @@ def main(ui=None, on_exit=None):
     # Draw layers (colored rectangles)
     screen.layer(2, 37, 315, 10, color565(80, 80, 80))
     screen.layer(2, 49, 316, 38, color565(192, 192, 192))
-    screen.layer(2, 88, 317, 149, color565(192, 192, 192))
+    screen.layer(2, 88, 316, 149, color565(235, 235, 235))
 
     # Create and draw buttons
     buttons = []
