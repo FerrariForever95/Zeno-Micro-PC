@@ -3,7 +3,7 @@
 
 import time
 from ili9341 import color565
-from firmware import HUIModule, UIScreen
+from firmware import HUIModule, UIScreen, UIButton
 
 APP_NAME    = 'ZenStore'
 APP_AUTHOR  = 'Phoenix'
@@ -16,17 +16,34 @@ def main(ui=None, on_exit=None):
         ui.begin()
 
     # Create screen
-    screen = UIScreen(ui, background=color565(255, 255, 255), taskbarcolor=color565(64, 0, 128), taskbar_text='ZenStore', taskbar_text_color=color565(255, 255, 255), on_exit=on_exit)
+    screen = UIScreen(ui, background=color565(255, 255, 255), taskbarcolor=color565(131, 141, 237), taskbar_text='ZenStore', taskbar_text_color=color565(255, 255, 255), on_exit=on_exit)
 
     screen.start(ui)
 
     # Draw layers (colored rectangles)
-    screen.layer(2, 39, 316, 25, color565(225, 225, 225))
-    screen.layer(2, 66, 316, 171, color565(202, 202, 202))
-    screen.layer(5, 101, 310, 133, color565(216, 216, 216))
+    screen.layer(2, 37, 315, 10, color565(80, 80, 80))
+    screen.layer(2, 49, 316, 38, color565(192, 192, 192))
+    screen.layer(2, 88, 317, 149, color565(192, 192, 192))
 
-    # Fade in / backlight safety
+    # Create and draw buttons
+    buttons = []
+    def on_button_click():
+        print('Button Install pressed')
+
+    buttons.append(UIButton(5, 53, 84, 30, label='Install', color=color565(223, 223, 223), text_color=color565(0, 0, 0), margin=5, action=on_button_click))
+    buttons.append(UIButton(91, 53, 84, 30, label='Uninstall', color=color565(223, 223, 223), text_color=color565(0, 0, 0), margin=5, action=on_button_click))
+    buttons.append(UIButton(177, 53, 137, 30, label='Search', color=color565(223, 223, 223), text_color=color565(0, 0, 0), margin=5, action=on_button_click))
+
+    for btn in buttons:
+        btn.draw(ui)
+
     ui.fade_in(fade_time=0.4)
+
+    while True:
+        # Handle button touches
+        for btn in buttons:
+            btn.get_touch(ui)
+        time.sleep(0.05)
 
 
 main()
