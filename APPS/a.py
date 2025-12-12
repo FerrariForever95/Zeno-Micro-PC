@@ -16,15 +16,13 @@ def main(ui=None, on_exit=None):
         ui.begin()
 
     # Create screen
-    screen = UIScreen(ui, background=color565(255, 255, 255), taskbarcolor=color565(255, 128, 0), taskbar_text='a', taskbar_text_color=color565(255, 255, 255), on_exit=on_exit)
+    screen = UIScreen(ui, background=color565(0, 0, 0), taskbarcolor=color565(50, 50, 50), taskbar_text='a', taskbar_text_color=color565(255, 255, 255), on_exit=on_exit)
 
     screen.start(ui)
 
     # Draw layers (colored rectangles)
-    screen.layer(73, 75, 175, 115, color565(80, 80, 80))
 
     # Create and draw texts (UIText)
-    UIText(155, 129, 'kodaka rara', color=color565(255, 255, 255))
 
     # Create and draw buttons
     buttons = []
