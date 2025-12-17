@@ -22,7 +22,7 @@ def main(ui=None, on_exit=None):
 
     # Draw layers (colored rectangles)
     screen.layer(3, 39, 313, 39, color565(255, 255, 255))
-    screen.layer(7, 43, 248, 31, color565(219, 219, 219))
+    screen.layer(6, 43, 197, 31, color565(219, 219, 219))
     screen.layer(4, 81, 311, 153, color565(207, 207, 207))
 
     # Create and draw texts (UIText)
@@ -32,7 +32,9 @@ def main(ui=None, on_exit=None):
     def on_button_click():
         print('Button Search pressed')
 
-    buttons.append(UIButton(258, 44, 53, 29, label='Search', color=color565(98, 98, 255), text_color=color565(255, 255, 255), margin=5, action=on_button_click))
+    buttons.append(UIButton(206, 44, 53, 29, label='Search', color=color565(98, 98, 255), text_color=color565(255, 255, 255), margin=5, action=on_button_click))
+    buttons.append(UIButton(261, 44, 22, 29, label='<', color=color565(119, 131, 255), text_color=color565(255, 255, 255), margin=5, action=on_button_click))
+    buttons.append(UIButton(286, 44, 22, 29, label='>', color=color565(128, 131, 255), text_color=color565(255, 255, 255), margin=5, action=on_button_click))
 
     for btn in buttons:
         btn.draw(ui)
