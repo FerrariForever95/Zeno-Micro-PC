@@ -16,21 +16,20 @@ def main(ui=None, on_exit=None):
         ui.begin()
 
     # Create screen
-    screen = UIScreen(ui, background=color565(251, 230, 221), taskbarcolor=color565(0, 0, 255), taskbar_text='trail', taskbar_text_color=color565(227, 253, 250), on_exit=on_exit)
+    screen = UIScreen(ui, background=color565(255, 255, 255), taskbarcolor=color565(50, 50, 50), taskbar_text='trail', taskbar_text_color=color565(255, 255, 255), on_exit=on_exit)
 
-    screen.start_withoutexit(ui)
+    screen.start(ui)
 
     # Draw layers (colored rectangles)
 
     # Create and draw texts (UIText)
-    UIText(177, 56, '', color=color565(0, 0, 0))
 
     # Create and draw buttons
     buttons = []
     def on_button_click():
-        print('Button pingulaa pressed')
+        print('Button Button 1 pressed')
 
-    buttons.append(UIButton(88, 83, 140, 54, label='pingulaa', color=color565(200, 50, 50), text_color=color565(255, 255, 255), margin=5, action=on_button_click))
+    buttons.append(UIButton(119, 87, 114, 64, label='Button 1', color=color565(200, 50, 50), text_color=color565(255, 255, 255), margin=5, action=on_button_click))
 
     for btn in buttons:
         btn.draw(ui)
