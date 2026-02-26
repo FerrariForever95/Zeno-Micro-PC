@@ -16,11 +16,13 @@ def on_exit():
 
 def main():
 
-    screen = UIScreen(ui, background=color565(0, 0, 0), taskbarcolor=color565(50, 50, 50), taskbar_text='Untitled1', taskbar_text_color=color565(255, 255, 255), on_exit=on_exit)
+    screen = UIScreen(ui, background=color565(0, 0, 0), taskbarcolor=color565(38, 49, 62), taskbar_text='simple application demo', taskbar_text_color=color565(255, 255, 255), on_exit=on_exit)
 
     screen.start(ui)
 
+    screen.layer(2, 38, 314, 200, color565(74, 113, 47))
 
+    UIText(42, 60, 'Simple Toggle Switch', color=color565(255, 255, 255)).draw(ui)
 
     buttons = []
     sliders = []
@@ -28,7 +30,7 @@ def main():
     progress_bars = []
     panels = []
 
-    toggles.append(UIToggleSwitch(229, 59, 50, state=True))
+    toggles.append(UIToggleSwitch(246, 53, 50, state=True))
 
     for panel in panels:
         panel.draw(ui)
