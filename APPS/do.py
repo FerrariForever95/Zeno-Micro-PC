@@ -22,7 +22,7 @@ def main():
 
     screen.layer(2, 38, 314, 200, color565(74, 113, 47))
 
-    UIText(42, 60, 'Simple Toggle Switch', color=color565(255, 255, 255)).draw(ui)
+    UIText(42, 60, 'Simple Toggle Switch',color565(255, 255, 255),color565(74, 113, 47)).draw(ui)
 
     buttons = []
     sliders = []
@@ -65,3 +65,4 @@ def main():
 
 
 main()
+
