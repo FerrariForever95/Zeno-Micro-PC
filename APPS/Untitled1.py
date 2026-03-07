@@ -2,7 +2,7 @@
 # App: Untitled1 (v1.0.0) by User
 
 import time
-from Graphics import color565 ,UIScreen, UIButton, UIText, UISlider, UIToggleSwitch, UIProgressBar, UIPanel
+from Graphics import color565 ,UIScreen, UIButton, UIText, UISlider, UIToggleSwitch, UIProgressBar, UIPanel, UICheckBox, UIDivider
 import zeno
 
 APP_NAME    = 'Untitled1'
@@ -27,6 +27,7 @@ def main():
     toggles = []
     progress_bars = []
     panels = []
+    checkboxes = []
 
 
     for panel in panels:
@@ -44,12 +45,18 @@ def main():
     for btn in buttons:
         btn.draw(ui)
 
+    for cb in checkboxes:
+        cb.draw(ui)
+
     ui.fade_in(fade_time=0.4)
 
     while True:
         screen.check(ui)
         for btn in buttons:
             btn.get_touch(ui)
+
+        for cb in checkboxes:
+            cb.handle_touch(ui)
 
         for slider in sliders:
             slider.handle_touch(ui)
