@@ -1,0 +1,20 @@
+{
+  "test": {
+    "version": "1.0",
+    "location": "/apps/test",
+    "file": "test.py",
+    "user": "YOUR_GITHUB_USERNAME",
+    "repo": "YOUR_REPO_NAME",
+    "github filename": "test.py",
+    "requirements": []
+  },
+  "test-with-dep": {
+    "version": "1.0",
+    "location": "/apps/test-with-dep",
+    "file": "test.py",
+    "user": "YOUR_GITHUB_USERNAME",
+    "repo": "YOUR_REPO_NAME",
+    "github filename": "test.py",
+    "requirements": ["test"]
+  }
+}
