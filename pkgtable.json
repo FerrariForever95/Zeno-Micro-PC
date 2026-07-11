@@ -54,7 +54,7 @@
     "repository": "Zeno-Micro-PC",
     "file": "math.py",
     "install_path": "/apps/math",
-    "dependencies": [],
+    "dependencies": ["math"],
     "modules": []
   },
   "ZenCMD": {
