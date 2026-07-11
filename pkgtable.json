@@ -1,17 +1,4 @@
 {
-  "PipDeck": {
-    "name": "PipDeck",
-    "version": "1.0.0",
-    "author": "FerrariForever95",
-    "repository": "PipDeck",
-    "file": "PipDeck V1.2.py",
-    "install_path": "/apps/hello-with-dep",
-    "dependencies": [],
-    "modules": [
-      "time",
-      "json"
-    ]
-  },
   "weather": {
     "name": "weather",
     "version": "1.0.0",
