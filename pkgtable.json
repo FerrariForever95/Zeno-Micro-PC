@@ -35,24 +35,6 @@
     "dependencies": [],
     "modules": []
   },
-  "calculator": {
-    "name": "calculator",
-    "version": "1.2.42",
-    "author": "FerrariForever95",
-    "repository": "calculator",
-    "file": "calculator.py",
-    "install_path": "/apps/calculator",
-    "dependencies": [
-      {
-        "name": "math",
-        "version": "1.0.0"
-      }
-    ],
-    "modules": [
-      "time",
-      "math"
-    ]
-  },
   "math": {
     "name": "math",
     "version": "1.0.0",
