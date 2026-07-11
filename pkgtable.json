@@ -34,5 +34,15 @@
     "install_path": "/apps/hello-world",
     "dependencies": [],
     "modules": []
+  },
+  "calculator": {
+    "name": "calculator",
+    "version": "1.0.0",
+    "author": "FerrariForever95",
+    "repository": "Zeno-Micro-PC",
+    "file": "calcualtor.py",
+    "install_path": "/apps/calculator",
+    "dependencies": [],
+    "modules": []
   }
 }
