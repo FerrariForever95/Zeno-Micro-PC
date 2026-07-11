@@ -29,5 +29,16 @@
         "install_path": "/apps/weather-widget",
         "dependencies": [],
         "modules": ["network", "json"]
+    },
+    "weather": {
+        "name": "weather",
+        "version": "1.0.0",
+        "author": "FerrariForever95",
+        "repository": "Zeno-Micro-PC",
+        "branch": "main",
+        "file": "packages/weather.py",
+        "install_path": "/apps/weather",
+        "dependencies": [],
+        "modules": ["network", "urequests"]
     }
 }
