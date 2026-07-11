@@ -12,20 +12,6 @@
       "json"
     ]
   },
-  "weather-widget": {
-    "name": "weather-widget",
-    "version": "2.1.0",
-    "author": "SomeOtherDev",
-    "repository": "zeno-weather-widget",
-    "branch": "release",
-    "file": "src/weather.py",
-    "install_path": "/apps/weather-widget",
-    "dependencies": [],
-    "modules": [
-      "network",
-      "json"
-    ]
-  },
   "weather": {
     "name": "weather",
     "version": "1.0.0",
