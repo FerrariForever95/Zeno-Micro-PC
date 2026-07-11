@@ -9,16 +9,14 @@
         "dependencies": [],
         "modules": ["time"]
     },
-    "hello-with-dep": {
-        "name": "hello-with-dep",
+    "PipDeck": {
+        "name": "PipDeck",
         "version": "1.0.0",
         "author": "FerrariForever95",
-        "repository": "Zeno-Micro-PC",
-        "file": "packages/hello-with-dep.py",
+        "repository": "PipDeck",
+        "file": "PipDeck V1.2.py",
         "install_path": "/apps/hello-with-dep",
-        "dependencies": [
-            {"name": "hello", "version": "1.0.0"}
-        ],
+        "dependencies": [],
         "modules": ["time", "json"]
     },
     "weather-widget": {
