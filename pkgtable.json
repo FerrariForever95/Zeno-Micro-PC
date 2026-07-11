@@ -52,4 +52,15 @@
         "dependencies": [],
         "modules": []
     }
+    "hello-world": {
+    "name": "hello-world",
+    "version": "1.0.0",
+    "author": "blackbird71SR",
+    "repository": "Hello-World",
+    "branch": "master",
+    "file": "HelloWorld.py",
+    "install_path": "/apps/hello-world",
+    "dependencies": [],
+    "modules": []
+}
 }
