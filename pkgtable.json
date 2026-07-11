@@ -1,7 +1,7 @@
 {
     "hello": {
         "name": "hello",
-        "version": "1.0.0",
+        "version": "1.1.2",
         "author": "FerrariForever95",
         "repository": "Zeno-Micro-PC",
         "file": "packages/hello.py",
