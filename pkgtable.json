@@ -56,5 +56,17 @@
     "install_path": "/apps/math",
     "dependencies": [],
     "modules": []
+  },
+  "ZenCMD": {
+    "name": "ZenCMD",
+    "version": "2.43",
+    "author": "FerrariForever95",
+    "repository": "Zeno-Micro-PC",
+    "file": "ZenCMD.py",
+    "install_path": "/",
+    "dependencies": [],
+    "modules": [
+      "firmware"
+    ]
   }
 }
