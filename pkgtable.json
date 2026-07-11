@@ -48,7 +48,7 @@
   "modules": [
     "time"
   ]
-}
+},
   "math": {
     "name": "math",
     "version": "1.0.0",
