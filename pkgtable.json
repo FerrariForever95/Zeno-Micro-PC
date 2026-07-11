@@ -39,7 +39,7 @@
     "name": "calculator",
     "version": "1.0.0",
     "author": "FerrariForever95",
-    "repository": "Zeno-Micro-PC",
+    "repository": "calculator",
     "file": "calcualtor.py",
     "install_path": "/apps/calculator",
     "dependencies": [],
