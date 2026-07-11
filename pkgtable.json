@@ -43,7 +43,9 @@
     "file": "calculator.py",
     "install_path": "/apps/calculator",
     "dependencies": [],
-    "modules": []
+    "modules": [
+      "time"
+    ]
   },
   "math": {
     "name": "math",
