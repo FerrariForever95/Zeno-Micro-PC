@@ -53,8 +53,6 @@
     "file": "ZenCMD.py",
     "install_path": "/",
     "dependencies": [],
-    "modules": [
-      "firmware.mpy"
-    ]
+    "modules": []
   }
 }
