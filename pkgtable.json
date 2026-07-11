@@ -34,9 +34,9 @@
         "name": "weather",
         "version": "1.0.0",
         "author": "FerrariForever95",
-        "repository": "Zeno-Micro-PC",
+        "repository": "weather",
         "branch": "main",
-        "file": "packages/weather.py",
+        "file": "weather.py",
         "install_path": "/apps/weather",
         "dependencies": [],
         "modules": ["network", "urequests"]
