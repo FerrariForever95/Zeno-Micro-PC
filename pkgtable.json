@@ -51,7 +51,7 @@
         "install_path": "/apps/agent",
         "dependencies": [],
         "modules": []
-    }
+    },
     "hello-world": {
     "name": "hello-world",
     "version": "1.0.0",
