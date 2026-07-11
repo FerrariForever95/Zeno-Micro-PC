@@ -1,58 +1,57 @@
 {
-    "hello": {
-        "name": "hello",
-        "version": "2.1.0",
-        "author": "FerrariForever95",
-        "repository": "Zeno-Micro-PC",
-        "file": "packages/hello.py",
-        "install_path": "/apps/hello",
-        "dependencies": [],
-        "modules": ["time"]
-    },
-    "PipDeck": {
-        "name": "PipDeck",
-        "version": "1.0.0",
-        "author": "FerrariForever95",
-        "repository": "PipDeck",
-        "file": "PipDeck V1.2.py",
-        "install_path": "/apps/hello-with-dep",
-        "dependencies": [],
-        "modules": ["time", "json"]
-    },
-    "weather-widget": {
-        "name": "weather-widget",
-        "version": "2.1.0",
-        "author": "SomeOtherDev",
-        "repository": "zeno-weather-widget",
-        "branch": "release",
-        "file": "src/weather.py",
-        "install_path": "/apps/weather-widget",
-        "dependencies": [],
-        "modules": ["network", "json"]
-    },
-    "weather": {
-        "name": "weather",
-        "version": "1.0.0",
-        "author": "FerrariForever95",
-        "repository": "weather",
-        "branch": "main",
-        "file": "weather.py",
-        "install_path": "/apps/weather",
-        "dependencies": [],
-        "modules": ["network", "urequests"]
-    },
-    "agent":{
-        "name":"agent",
-        "version": "1.2.4",
-        "author": "prem1306",
-        "repository": "My-AI-agent",
-        "branch": "main",
-        "file" : "cli.py",
-        "install_path": "/apps/agent",
-        "dependencies": [],
-        "modules": []
-    },
-    "hello-world": {
+  "PipDeck": {
+    "name": "PipDeck",
+    "version": "1.0.0",
+    "author": "FerrariForever95",
+    "repository": "PipDeck",
+    "file": "PipDeck V1.2.py",
+    "install_path": "/apps/hello-with-dep",
+    "dependencies": [],
+    "modules": [
+      "time",
+      "json"
+    ]
+  },
+  "weather-widget": {
+    "name": "weather-widget",
+    "version": "2.1.0",
+    "author": "SomeOtherDev",
+    "repository": "zeno-weather-widget",
+    "branch": "release",
+    "file": "src/weather.py",
+    "install_path": "/apps/weather-widget",
+    "dependencies": [],
+    "modules": [
+      "network",
+      "json"
+    ]
+  },
+  "weather": {
+    "name": "weather",
+    "version": "1.0.0",
+    "author": "FerrariForever95",
+    "repository": "weather",
+    "branch": "main",
+    "file": "weather.py",
+    "install_path": "/apps/weather",
+    "dependencies": [],
+    "modules": [
+      "network",
+      "urequests"
+    ]
+  },
+  "agent": {
+    "name": "agent",
+    "version": "1.2.4",
+    "author": "prem1306",
+    "repository": "My-AI-agent",
+    "branch": "main",
+    "file": "cli.py",
+    "install_path": "/apps/agent",
+    "dependencies": [],
+    "modules": []
+  },
+  "hello-world": {
     "name": "hello-world",
     "version": "1.0.0",
     "author": "blackbird71SR",
@@ -62,5 +61,5 @@
     "install_path": "/apps/hello-world",
     "dependencies": [],
     "modules": []
-}
+  }
 }
