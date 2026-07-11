@@ -40,5 +40,16 @@
         "install_path": "/apps/weather",
         "dependencies": [],
         "modules": ["network", "urequests"]
+    },
+    "agent":{
+        "name":"agent",
+        "version": "1.2.0",
+        "author": "prem1306",
+        "repository": "My-AI-agent",
+        "branch": "main",
+        "file" : "agent.py",
+        "install_path": "/apps/agent",
+        "dependencies": [],
+        "modules": []
     }
 }
