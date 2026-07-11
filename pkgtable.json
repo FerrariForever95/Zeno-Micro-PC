@@ -37,7 +37,7 @@
   },
   "calculator": {
     "name": "calculator",
-    "version": "1.0.0",
+    "version": "1.2.42",
     "author": "FerrariForever95",
     "repository": "calculator",
     "file": "calculator.py",
