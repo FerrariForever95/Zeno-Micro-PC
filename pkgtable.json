@@ -40,7 +40,7 @@
     "version": "1.0.0",
     "author": "FerrariForever95",
     "repository": "calculator",
-    "file": "calcualtor.py",
+    "file": "calculator.py",
     "install_path": "/apps/calculator",
     "dependencies": [],
     "modules": []
