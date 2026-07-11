@@ -47,7 +47,7 @@
         "author": "prem1306",
         "repository": "My-AI-agent",
         "branch": "main",
-        "file" : "agent.py",
+        "file" : "cli.py",
         "install_path": "/apps/agent",
         "dependencies": [],
         "modules": []
