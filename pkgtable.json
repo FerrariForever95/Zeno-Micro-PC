@@ -54,5 +54,16 @@
     "install_path": "/",
     "dependencies": [],
     "modules": []
+  },
+  "banner": {
+    "name": "banner",
+    "version": "1.0.0",
+    "author": "FerrariForever95",
+    "repository": "banner",
+    "branch": "main",
+    "file": "banner.py",
+    "install_path": "/bin/banner",
+    "dependencies": [],
+    "modules": []
   }
 }
