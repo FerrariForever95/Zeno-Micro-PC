@@ -31,7 +31,7 @@
     "repository": "Hello-World",
     "branch": "master",
     "file": "HelloWorld.py",
-    "install_path": "/apps/hello-world",
+    "install_path": "/bin/hello-world",
     "dependencies": [],
     "modules": []
   },
