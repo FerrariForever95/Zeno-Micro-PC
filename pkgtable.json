@@ -6,7 +6,7 @@
     "repository": "weather",
     "branch": "main",
     "file": "weather.py",
-    "install_path": "/apps/weather",
+    "install_path": "/bin/weather",
     "dependencies": [],
     "modules": [
       "network",
