@@ -11,7 +11,7 @@ import zeno
 # =================================================
 # VERSION
 # =================================================
-ZENCMD_VERSION = "2.1.0"
+ZENCMD_VERSION = "2.2.0"
 ZENOS_NAME     = "Zeno OS"
 
 # =================================================
@@ -23,8 +23,8 @@ logger = Logger()
 # USER MANAGER / FILE MANAGER  (single instances, never duplicated)
 # =================================================
 _um = usermanager()
-_fm = FileManager()   # <-- all filesystem access now goes through here
-
+_fm = FileManager()   # <-- ALL filesystem access goes through here, no raw os/open()
+_pm = PackageManager()
 # =================================================
 # MODULE REGISTRY
 # =================================================
@@ -82,7 +82,7 @@ PRIVILEGED_PREFIXES = (
 # =================================================
 # STATE
 # =================================================
-current_path   = "/"
+current_path   = "/Home"
 active_module  = None        # str key
 module_instance = None       # live object
 
@@ -90,6 +90,8 @@ history_log    = []          # command history
 aliases        = {}          # user-defined aliases
 env_vars       = {}          # shell environment
 jobs           = []          # background job stubs
+
+_PIPE_IN       = None        # list[str] of lines fed in from a "|" pipeline, else None
 
 # =================================================
 # PRIVILEGE HELPERS
@@ -119,12 +121,12 @@ def _prompt():
 
     if _is_super():
         path_part = f"root/{d}" if d else "root/"
-        return f"{path_part}# "
+        return f"{path_part}#:$"
     else:
-        path_part = f"{zeno.user}/{d}" if d else f"{zeno.user}/"
+        path_part = f"{zeno.user}/{d}:$" if d else f"{zeno.user}/:$"
         if active_module:
             return f"{path_part}[{active_module}]> "
-        return f"{path_part}> "
+        return f"{path_part}>"
 
 
 # =================================================
@@ -132,12 +134,30 @@ def _prompt():
 # through FileManager, which does its own normalisation internally)
 # =================================================
 
+def _normalize_path(path):
+    """Collapse '.', '..' and repeated slashes into a clean absolute path.
+    This is what makes 'cd ..', 'cd ../foo', 'cat ../x.txt' etc. actually work --
+    previously paths were just string-concatenated and '..' was never resolved."""
+    parts = []
+    for p in path.split("/"):
+        if p in ("", "."):
+            continue
+        if p == "..":
+            if parts:
+                parts.pop()
+            continue
+        parts.append(p)
+    return "/" + "/".join(parts) if parts else "/"
+
+
 def _abs(path):
-    """Resolve a path to absolute using current_path."""
+    """Resolve a path to a normalized absolute path using current_path."""
     if path.startswith("/"):
-        return path
-    base = current_path if current_path.endswith("/") else current_path + "/"
-    return base + path
+        combined = path
+    else:
+        base = current_path if current_path.endswith("/") else current_path + "/"
+        combined = base + path
+    return _normalize_path(combined)
 
 
 def _pjoin(parent, name):
@@ -240,7 +260,9 @@ def list_dir(path, long=False):
     for f in entries:
         full = _pjoin(path, f)
         # hide protected root-level .py unless super (system files)
-        if path == "/" and f.endswith(".py") and not _is_super():
+        if path == "/" and (f.endswith(".py") or f.endswith(".mpy")) and not _is_super():
+            continue
+        if f in ["pkglist.json", "pkgtable.json"]:
             continue
         try:
             meta = _fm.metadata(full)
@@ -286,8 +308,18 @@ def convert_arg(arg):
         return arg
 
 
+def _is_intlike(s):
+    try:
+        int(s)
+        return True
+    except Exception:
+        return False
+
+
 def _split(cmd):
-    """Split command line respecting quoted strings."""
+    """Split a single command into tokens, respecting quoted strings.
+    Quote characters themselves are stripped (used for the final,
+    per-command argument split)."""
     parts  = []
     buf    = []
     in_q   = False
@@ -312,12 +344,79 @@ def _split(cmd):
     return parts
 
 
+def _split_top(raw, delims):
+    """Split raw text on any character in `delims` (e.g. ';' or '|'),
+    but never inside quotes. Quote characters are PRESERVED here (unlike
+    _split) since each resulting segment is itself re-tokenized later."""
+    segments = []
+    buf    = []
+    in_q   = False
+    q_char = None
+    for ch in raw:
+        if in_q:
+            buf.append(ch)
+            if ch == q_char:
+                in_q = False
+        elif ch in ('"', "'"):
+            in_q   = True
+            q_char = ch
+            buf.append(ch)
+        elif ch in delims:
+            segments.append("".join(buf))
+            buf = []
+        else:
+            buf.append(ch)
+    segments.append("".join(buf))
+    return segments
+
+
+# =================================================
+# STDOUT CAPTURE  (backs the "|" pipeline -- lets one command's printed
+# output become the next command's piped-in lines)
+# =================================================
+
+class _OutputCapture:
+    def __init__(self):
+        self.lines = []
+        self._buf = ""
+
+    def write(self, s):
+        self._buf += s
+        while "\n" in self._buf:
+            line, self._buf = self._buf.split("\n", 1)
+            self.lines.append(line)
+
+    def flush(self):
+        pass
+
+
+def _read_lines(args, idx=0):
+    """Get a list of text lines for commands like cat/head/tail/search.
+    Priority: an explicit file argument at args[idx], otherwise whatever
+    came in through a '|' pipe. Returns None if neither is available."""
+    if len(args) > idx:
+        p = _abs(args[idx])
+        try:
+            fd = _fm.open(p, "r")
+            try:
+                data = _fm.read(fd)
+            finally:
+                _fm.close(fd)
+            return data.splitlines()
+        except Exception as e:
+            print("[read]", e)
+            return None
+    if _PIPE_IN is not None:
+        return _PIPE_IN
+    return None
+
+
 # =================================================
 # BUILT-IN COMMAND HELP STRINGS
 # =================================================
 BUILTIN_HELP = {
     "pwd":         "pwd                   Print working directory",
-    "cd":          "cd <path>             Change directory",
+    "cd":          "cd <path>             Change directory (supports .. and .)",
     "ls":          "ls [-l]               List directory contents",
     "dir":         "dir                   Alias for ls",
     "tree":        "tree [path]           Show directory tree",
@@ -327,9 +426,10 @@ BUILTIN_HELP = {
     "cp":          "cp <src> <dst>        Copy file",
     "mv":          "mv <src> <dst>        Move/rename file",
     "touch":       "touch <file>          Create empty file",
-    "cat":         "cat <file>            Print file contents",
-    "head":        "head <file> [n]       Print first n lines (default 10)",
-    "tail":        "tail <file> [n]       Print last n lines (default 10)",
+    "cat":         "cat <file>            Print file contents (or piped input)",
+    "head":        "head <file> [n]       Print first n lines (default 10; or piped input)",
+    "tail":        "tail <file> [n]       Print last n lines (default 10; or piped input)",
+    "search":      "search <pat> [file]   Grep-like search (alias: grep; supports piped input)",
     "echo":        "echo <text>           Print text",
     "clear":       "clear                 Clear terminal  (cls alias)",
     "cls":         "cls                   Alias for clear",
@@ -391,7 +491,7 @@ def _shell_help():
     for k in ("pwd", "cd", "ls", "tree", "mkdir", "rmdir", "rm", "cp", "mv", "touch"):
         print(" ", BUILTIN_HELP[k])
     print("\nFile Operations")
-    for k in ("cat", "head", "tail", "echo", "stat", "file", "find", "which", "whereis"):
+    for k in ("cat", "head", "tail", "search", "echo", "stat", "file", "find", "which", "whereis"):
         print(" ", BUILTIN_HELP[k])
     print("\nSystem")
     for k in ("whoami", "id", "hostname", "date", "time", "uptime", "version",
@@ -409,6 +509,11 @@ def _shell_help():
     print("\nPackages: 'enter pkg' or 'pkg <install|uninstall|reinstall|update|")
     print("info|list|verify|run> ...'. install/uninstall/reinstall/update")
     print("require Super Mode. Use 'pkgrun <pkg> [args]' to run one directly.")
+    print("\nChaining: use ';' to run commands one after another")
+    print("  e.g.  clear ; ls")
+    print("and '|' to pipe one command's output into the next")
+    print("  e.g.  cat /LOGS/systemlog.txt | search ERROR")
+    print("  e.g.  ls -l | search .py")
     print("\nType 'help <command>' for details, or '<module> help' for module help.")
     print()
 
@@ -561,54 +666,73 @@ def _cmd_touch(args):
 
 
 def _cmd_cat(args):
-    if not args:
-        print("Usage: cat <file>")
+    lines = _read_lines(args, 0)
+    if lines is None:
+        print("Usage: cat <file>  (or pipe input, e.g. ls | cat)")
         return
-    p = _abs(args[0])
-    try:
-        fd = _fm.open(p, "r")
-        try:
-            print(_fm.read(fd))
-        finally:
-            _fm.close(fd)
-    except Exception as e:
-        print("[cat]", e)
+    print("\n".join(lines))
 
 
 def _cmd_head(args):
-    if not args:
-        print("Usage: head <file> [n]")
+    n = 10
+    file_args = args
+    if _PIPE_IN is not None and (not args or _is_intlike(args[0])):
+        if args:
+            n = int(args[0])
+        file_args = []
+    elif len(args) > 1:
+        n = int(args[1])
+        file_args = args[:1]
+    else:
+        file_args = args[:1]
+
+    lines = _read_lines(file_args, 0)
+    if lines is None:
+        print("Usage: head <file> [n]  (or pipe input)")
         return
-    p = _abs(args[0])
-    n = int(args[1]) if len(args) > 1 else 10
-    try:
-        fd = _fm.open(p, "r")
-        try:
-            data = _fm.read(fd)
-        finally:
-            _fm.close(fd)
-        for line in data.splitlines()[:n]:
-            print(line)
-    except Exception as e:
-        print("[head]", e)
+    for line in lines[:n]:
+        print(line)
 
 
 def _cmd_tail(args):
-    if not args:
-        print("Usage: tail <file> [n]")
+    n = 10
+    file_args = args
+    if _PIPE_IN is not None and (not args or _is_intlike(args[0])):
+        if args:
+            n = int(args[0])
+        file_args = []
+    elif len(args) > 1:
+        n = int(args[1])
+        file_args = args[:1]
+    else:
+        file_args = args[:1]
+
+    lines = _read_lines(file_args, 0)
+    if lines is None:
+        print("Usage: tail <file> [n]  (or pipe input)")
         return
-    p = _abs(args[0])
-    n = int(args[1]) if len(args) > 1 else 10
-    try:
-        fd = _fm.open(p, "r")
-        try:
-            data = _fm.read(fd)
-        finally:
-            _fm.close(fd)
-        for line in data.splitlines()[-n:]:
+    for line in lines[-n:]:
+        print(line)
+
+
+def _cmd_search(args):
+    """grep-like: search <pattern> [file] -- reads from file if given,
+    otherwise from piped input (e.g. cat log.txt | search ERROR)."""
+    if not args:
+        print("Usage: search <pattern> [file]  (or pipe input, e.g. cat file | search foo)")
+        return
+    pattern = args[0]
+    lines = _read_lines(args, 1)
+    if lines is None:
+        print("Usage: search <pattern> [file]  (or pipe input)")
+        return
+    matched = 0
+    for line in lines:
+        if pattern in line:
             print(line)
-    except Exception as e:
-        print("[tail]", e)
+            matched += 1
+    if matched == 0:
+        print("[search] no matches")
 
 
 def _cmd_stat(args):
@@ -931,18 +1055,26 @@ def _cmd_mountzfs(args):
 
 
 def _cmd_bootlog(args):
+    p = "/bootlog.txt"
     try:
-        with open("/bootlog.txt", "r") as f:
-            print(f.read())
-    except:
+        fd = _fm.open(p, "r")
+        try:
+            print(_fm.read(fd))
+        finally:
+            _fm.close(fd)
+    except Exception:
         print("[bootlog] No boot log found.")
 
 
 def _cmd_log(args):
+    p = "/log.txt"
     try:
-        with open("/log.txt", "r") as f:
-            print(f.read())
-    except:
+        fd = _fm.open(p, "r")
+        try:
+            print(_fm.read(fd))
+        finally:
+            _fm.close(fd)
+    except Exception:
         print("[log] No log file found.")
 
 
@@ -1110,6 +1242,7 @@ BUILTINS = {
     "cat":          (_cmd_cat,       False),
     "head":         (_cmd_head,      False),
     "tail":         (_cmd_tail,      False),
+    "search":       (_cmd_search,    False),
     "echo":         (_cmd_echo,      False),
     "stat":         (_cmd_stat,      False),
     "file":         (_cmd_file,      False),
@@ -1162,9 +1295,10 @@ BUILTINS = {
 }
 
 # Default aliases (user can override)
-aliases["ll"]  = "ls -l"
-aliases["cls"] = "clear"
-aliases["q"]   = "exit"
+aliases["ll"]   = "ls -l"
+aliases["cls"]  = "clear"
+aliases["q"]    = "exit"
+aliases["grep"] = "search"
 
 
 # =================================================
@@ -1185,21 +1319,19 @@ def _preprocess(raw):
 
 
 # =================================================
-# TOP-LEVEL COMMAND HANDLER
+# SINGLE-COMMAND EXECUTION  (one command word + its args -- no ';' or '|')
 # =================================================
 
-def handle(raw):
+def _execute(raw):
     global current_path, active_module, module_instance
 
-    cmd  = _preprocess(raw).strip()
+    cmd = _preprocess(raw).strip()
     if not cmd:
         return
 
     parts = _split(cmd)
     verb  = parts[0].lower()
     args  = parts[1:]
-
-    history_log.append(raw)
 
     # ---- exit / quit ----
     if verb in ("exit", "quit"):
@@ -1303,8 +1435,75 @@ def handle(raw):
             return
         handler(args)
         return
-
+    if verb in _pm.list():
+        _pm.run(verb)
+        logger.debug(f"Module call: {verb}", source="ZenCMD")
+        return
     print(f"Unknown command: {verb}  (type 'help')")
+
+
+# =================================================
+# PIPELINE ("|") + STATEMENT SEQUENCING (";")
+# =================================================
+
+def _run_single(cmd_line, pipe_in=None, capture=False):
+    """Run one pipeline segment. If capture=True, stdout is redirected
+    and the printed lines are returned (for the next segment); otherwise
+    output goes straight to the real terminal and None is returned."""
+    global _PIPE_IN
+    _PIPE_IN = pipe_in
+
+    if not capture:
+        try:
+            _execute(cmd_line)
+        finally:
+            _PIPE_IN = None
+        return None
+
+    old_stdout = sys.stdout
+    cap = _OutputCapture()
+    sys.stdout = cap
+    try:
+        _execute(cmd_line)
+    finally:
+        sys.stdout = old_stdout
+        _PIPE_IN = None
+    if cap._buf:
+        cap.lines.append(cap._buf)
+    return cap.lines
+
+
+def _run_statement(stmt):
+    """Run one ';'-separated statement, handling any '|' pipeline within it."""
+    segments = [s.strip() for s in _split_top(stmt, "|")]
+    segments = [s for s in segments if s]
+    if not segments:
+        return
+    if len(segments) == 1:
+        _run_single(segments[0], pipe_in=None, capture=False)
+        return
+
+    data = None
+    for i, seg in enumerate(segments):
+        is_last = (i == len(segments) - 1)
+        data = _run_single(seg, pipe_in=data, capture=not is_last)
+
+
+# =================================================
+# TOP-LEVEL COMMAND HANDLER
+# =================================================
+
+def handle(raw):
+    raw = raw.strip()
+    if not raw:
+        return
+
+    statements = [s.strip() for s in _split_top(raw, ";")]
+    for stmt in statements:
+        if not stmt:
+            continue
+        history_log.append(stmt)
+        _run_statement(stmt)
 
 
 # =================================================
