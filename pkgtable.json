@@ -37,7 +37,7 @@
   },
   "math": {
     "name": "math",
-    "version": "1.0.0",
+    "version": "1.0.2",
     "author": "FerrariForever95",
     "repository": "Zeno-Micro-PC",
     "file": "math.py",
