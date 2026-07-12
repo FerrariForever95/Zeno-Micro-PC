@@ -1,7 +1,7 @@
 {
   "weather": {
     "name": "weather",
-    "version": "1.0.0",
+    "version": "1.0.4",
     "author": "FerrariForever95",
     "repository": "weather",
     "branch": "main",
