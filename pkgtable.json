@@ -65,5 +65,15 @@
     "install_path": "/bin/banner",
     "dependencies": [],
     "modules": []
+  },
+  "pythontest": {
+    "name": "pythontest",
+    "version": "1.0.0",
+    "author": "crazy45flash",
+    "repository": "Python",
+    "file": "Pythontest.py",
+    "install_path": "/bin/Pythontest",
+    "dependencies": [],
+    "modules": []
   }
 }
