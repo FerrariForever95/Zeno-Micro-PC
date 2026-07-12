@@ -41,7 +41,7 @@
     "author": "FerrariForever95",
     "repository": "Zeno-Micro-PC",
     "file": "math.py",
-    "install_path": "/apps/math",
+    "install_path": "/bin/math",
     "dependencies": [],
     "modules": []
   },
