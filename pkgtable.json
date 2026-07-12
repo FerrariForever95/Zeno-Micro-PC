@@ -15,7 +15,7 @@
   },
   "agent": {
     "name": "agent",
-    "version": "1.2.6",
+    "version": "1.2.8",
     "author": "prem1306",
     "repository": "My-AI-agent",
     "branch": "main",
