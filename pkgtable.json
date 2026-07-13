@@ -13,16 +13,6 @@
       "urequests"
     ]
   },
-  "math": {
-    "name": "math",
-    "version": "1.0.2",
-    "author": "FerrariForever95",
-    "repository": "Zeno-Micro-PC",
-    "file": "math.py",
-    "install_path": "/bin/math",
-    "dependencies": [],
-    "modules": []
-  },
   "ZenCMD": {
     "name": "ZenCMD",
     "version": "3.45",
