@@ -23,15 +23,5 @@
     "dependencies": [],
     "modules": [],
     "core": true
-  },
-  "sum": {
-    "name": "sum",
-    "version": "1.0.0",
-    "author": "Harini966",
-    "repository": "python",
-    "file": "sum.py",
-    "install_path": "/bin/Python",
-    "dependencies": [],
-    "modules": []
   }
 }
