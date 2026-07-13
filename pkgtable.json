@@ -32,5 +32,20 @@
     "dependencies": [],
     "modules": [],
     "core": true
+  },
+  "firmware": {
+    "name": "firmware",
+    "version": "4.3.2",
+    "author": "FerrariForever95",
+    "repository": "Zeno-Micro-PC",
+    "branch": "main",
+    "file": "firmware.mpy",
+    "install_path": "/",
+    "dependencies": [],
+    "modules": [
+      "os",
+      "json"
+    ],
+    "core": true
   }
 }
