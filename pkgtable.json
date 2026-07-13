@@ -44,7 +44,11 @@
     "dependencies": [],
     "modules": [
       "os",
-      "json"
+      "json",
+      "network",
+      "sys",
+      "micropython",
+      "ubluetooth"
     ],
     "core": true
   },
