@@ -73,7 +73,7 @@
     "author": "FerrariForever95",
     "repository": "core",
     "branch": "main",
-    "file": "recover.py",
+    "file": "recovery.py",
     "install_path": "/",
     "dependencies": [],
     "modules": [
