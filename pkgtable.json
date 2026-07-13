@@ -24,7 +24,7 @@
   },
   "Services": {
     "name": "Services",
-    "version": "7.12",
+    "version": "7.13",
     "author": "FerrariForever95",
     "repository": "core",
     "file": "Services.py",
