@@ -21,5 +21,16 @@
     "dependencies": [],
     "modules": [],
     "core": false
+  },
+  "Services": {
+    "name": "Services",
+    "version": "7.12",
+    "author": "FerrariForever95",
+    "repository": "core",
+    "file": "Services.py",
+    "install_path": "/",
+    "dependencies": [],
+    "modules": [],
+    "core": true
   }
 }
