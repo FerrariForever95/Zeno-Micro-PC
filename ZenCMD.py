@@ -1,5 +1,403 @@
 print("ZenCMD/2 initializing...")
+# =================================================
+# Zeno OS Recovery
+# =================================================
+# This module is the "last resort" path: it must keep working even if
+# /Services, PackageManager, Git, Network, or zeno.py are missing or
+# corrupted. To guarantee that, it ONLY uses built-in MicroPython modules
+# (network, urequests, json, os, time, urandom) and never imports
+# anything from /Services.
 
+import os
+import json
+import time
+
+try:
+    import urandom
+except ImportError:                       # pragma: no cover - desktop fallback
+    import random as urandom
+
+try:
+    import network
+except ImportError:
+    network = None
+
+try:
+    import urequests
+except ImportError:
+    urequests = None
+
+
+PKGTABLE_URL = "https://raw.githubusercontent.com/FerrariForever95/Zeno-Micro-PC/main/pkgtable.json"
+PKGLIST_PATH = "/pkglist.json"
+ZENO_PATH    = "/zeno.py"
+
+ZENO_TEMPLATE = """import urandom,time
+
+ui=None
+tsk=None
+log=None
+net=None
+usr=None
+fm=None
+
+boot_cap=urandom.getrandbits(32)
+
+wallpaper=f""
+
+boot_time=None
+
+authorized=False
+
+password="{password}"
+
+user="{user}"
+
+gitsecret="{gitsecret}"
+
+ssid="{ssid}"
+
+wifi_password="{wifi_password}"
+"""
+
+
+class Recovery:
+    """Lightweight, dependency-free recovery utility. Rebuilds every
+    'core' package listed in pkgtable.json directly from GitHub."""
+
+    def __init__(self):
+        self._creds = {}          # kept only in RAM until recovery completes
+        self._pkgtable = None
+        self._results = {"installed": [], "updated_flagged": [], "failed": []}
+
+    def help(self):
+        print("  recover               Rebuild core OS components from pkgtable.json")
+        print("                        Works even if Services/PackageManager/Git/")
+        print("                        Network/zeno.py are missing or corrupted.")
+
+    # =============================================
+    # entry point
+    # =============================================
+    def run(self):
+        print("\n=== Zeno OS Recovery ===")
+        print("Rebuilding core OS components from pkgtable.json.\n")
+
+        zeno_existed = self._file_exists(ZENO_PATH)
+
+        if zeno_existed:
+            print("[recover] Found existing zeno.py -- using its stored Wi-Fi credentials.")
+            ssid, password = self._read_zeno_wifi()
+            if not ssid:
+                print("[recover] Could not read usable Wi-Fi credentials from zeno.py.")
+                ssid, password = self._prompt_wifi_only()
+        else:
+            print("[recover] zeno.py not found -- collecting setup details.")
+            self._creds = self._prompt_all()
+            ssid = self._creds.get("ssid")
+            password = self._creds.get("wifi_password")
+
+        if not self._connect_wifi(ssid, password):
+            print("[recover] Could not establish Wi-Fi connection. Aborting recovery.")
+            return False
+
+        self._pkgtable = self._download_pkgtable()
+        if self._pkgtable is None:
+            print("[recover] Could not download/parse pkgtable.json. Aborting recovery.")
+            return False
+
+        core_pkgs = [n for n, e in self._pkgtable.items() if e.get("core", False)]
+        if not core_pkgs:
+            print("[recover] No packages flagged core:true were found in pkgtable.json.")
+        else:
+            print("[recover] Core packages to restore: {}".format(", ".join(core_pkgs)))
+
+        installed = self._load_pkglist()
+        seen = set()
+        for name in core_pkgs:
+            self._restore_package(name, installed, seen)
+
+        self._save_pkglist(installed)
+
+        print("\n[recover] Recovery summary:")
+        print("  Restored/repaired  : {}".format(", ".join(self._results["installed"]) or "none"))
+        print("  Flagged for update : {}".format(", ".join(self._results["updated_flagged"]) or "none"))
+        print("  Failed             : {}".format(", ".join(self._results["failed"]) or "none"))
+
+        if not zeno_existed:
+            if self._results["failed"]:
+                print("[recover] Skipping zeno.py generation -- one or more core packages failed.")
+            else:
+                self._write_zeno_py(self._creds)
+                print("[recover] Generated new zeno.py.")
+            # credentials only ever lived in self._creds / locals -- drop them now
+            self._creds = {}
+
+        print("=== Recovery complete ===\n")
+        return not self._results["failed"]
+
+    # =============================================
+    # prompts (only used when zeno.py is missing)
+    # =============================================
+    def _prompt_all(self):
+        creds = {}
+        creds["user"] = input("Username: ").strip()
+        creds["password"] = input("Password: ").strip()
+        creds["ssid"] = input("Wi-Fi SSID: ").strip()
+        creds["wifi_password"] = input("Wi-Fi Password: ").strip()
+        creds["gitsecret"] = input("Git Personal Access Token (optional, Enter to skip): ").strip()
+        return creds
+
+    def _prompt_wifi_only(self):
+        ssid = input("Wi-Fi SSID: ").strip()
+        password = input("Wi-Fi Password: ").strip()
+        return ssid, password
+
+    # =============================================
+    # zeno.py handling -- read-only, never imports it (it may be broken)
+    # =============================================
+    def _file_exists(self, path):
+        try:
+            os.stat(path)
+            return True
+        except OSError:
+            return False
+
+    def _read_zeno_wifi(self):
+        try:
+            with open(ZENO_PATH) as f:
+                text = f.read()
+        except OSError:
+            return None, None
+
+        ssid = self._extract_assignment(text, "ssid")
+        password = self._extract_assignment(text, "wifi_password")
+        return ssid, password
+
+    def _extract_assignment(self, text, var_name):
+        for line in text.splitlines():
+            line = line.strip()
+            if line.startswith(var_name + "=") or line.startswith(var_name + " ="):
+                _, _, rhs = line.partition("=")
+                rhs = rhs.strip()
+                if len(rhs) >= 2 and rhs[0] == rhs[-1] and rhs[0] in ("'", '"'):
+                    return rhs[1:-1]
+                return rhs or None
+        return None
+
+    def _write_zeno_py(self, creds):
+        content = ZENO_TEMPLATE.format(
+            password=creds.get("password", ""),
+            user=creds.get("user", ""),
+            gitsecret=creds.get("gitsecret", ""),
+            ssid=creds.get("ssid", ""),
+            wifi_password=creds.get("wifi_password", ""),
+        )
+        with open(ZENO_PATH, "w") as f:
+            f.write(content)
+
+    # =============================================
+    # Wi-Fi -- connects directly via the 'network' module, never via
+    # the Network service
+    # =============================================
+    def _connect_wifi(self, ssid, password):
+        if not ssid:
+            print("[recover] No SSID available to connect with.")
+            return False
+        if network is None:
+            print("[recover] 'network' module unavailable on this platform -- "
+                  "assuming an existing/wired connection and continuing.")
+            return True
+        try:
+            wlan = network.WLAN(network.STA_IF)
+            wlan.active(True)
+            if wlan.isconnected():
+                return True
+            wlan.connect(ssid, password)
+            for _ in range(20):
+                if wlan.isconnected():
+                    print("[recover] Wi-Fi connected.")
+                    return True
+                time.sleep(0.5)
+            print("[recover] Wi-Fi connection timed out.")
+            return False
+        except Exception as e:
+            print("[recover] Wi-Fi error: {}".format(e))
+            return False
+
+    # =============================================
+    # HTTP / pkgtable
+    # =============================================
+    def _download_pkgtable(self):
+        raw = self._http_get_text(PKGTABLE_URL)
+        if raw is None:
+            return None
+        try:
+            return json.loads(raw)
+        except ValueError as e:
+            print("[recover] pkgtable.json is not valid JSON: {}".format(e))
+            return None
+
+    def _http_get_text(self, url):
+        if urequests is None:
+            print("[recover] 'urequests' module unavailable -- cannot download {}".format(url))
+            return None
+        try:
+            resp = urequests.get(url)
+            try:
+                if resp.status_code != 200:
+                    print("[recover] HTTP {} fetching {}".format(resp.status_code, url))
+                    return None
+                return resp.text
+            finally:
+                resp.close()
+        except Exception as e:
+            print("[recover] Download failed for {}: {}".format(url, e))
+            return None
+
+    def _raw_url(self, author, repo, branch, file_path):
+        return "https://raw.githubusercontent.com/{}/{}/{}/{}".format(
+            author, repo, branch or "main", file_path)
+
+    # =============================================
+    # filesystem helpers -- raw os/open only, mkdir -p style
+    # =============================================
+    def _mkdirs(self, path):
+        parts = [p for p in path.split("/") if p]
+        cur = ""
+        for p in parts:
+            cur += "/" + p
+            try:
+                os.mkdir(cur)
+            except OSError:
+                pass  # already exists
+
+    def _full_path(self, install_path, filename):
+        return "{}/{}".format((install_path or "/").rstrip("/"), filename)
+
+    def _write_and_verify(self, path, data):
+        directory = path.rsplit("/", 1)[0] or "/"
+        self._mkdirs(directory)
+        try:
+            with open(path, "w") as f:
+                f.write(data)
+        except OSError as e:
+            print("[recover] Could not write '{}': {}".format(path, e))
+            return False
+
+        try:
+            written_size = os.stat(path)[6]
+        except OSError:
+            print("[recover] Verification failed: '{}' missing after write.".format(path))
+            return False
+
+        if written_size != len(data):
+            print("[recover] Verification failed: size mismatch writing '{}'.".format(path))
+            return False
+        return True
+
+    def _file_is_healthy(self, path):
+        try:
+            return os.stat(path)[6] > 0
+        except OSError:
+            return False
+
+    # =============================================
+    # pkglist.json (read/write directly -- no PackageManager/FileManager)
+    # =============================================
+    def _load_pkglist(self):
+        try:
+            with open(PKGLIST_PATH) as f:
+                data = json.load(f)
+            return data if isinstance(data, dict) else {}
+        except (OSError, ValueError):
+            return {}
+
+    def _save_pkglist(self, data):
+        try:
+            with open(PKGLIST_PATH, "w") as f:
+                json.dump(data, f)
+        except OSError as e:
+            print("[recover] Could not write pkglist.json: {}".format(e))
+
+    # =============================================
+    # per-package restore, with dependency resolution
+    # =============================================
+    def _restore_package(self, name, installed, seen, chain=None):
+        if name in seen:
+            return name not in self._results["failed"]
+        seen.add(name)
+        chain = chain or []
+        if name in chain:
+            print("[recover] Dependency cycle detected involving '{}' -- skipping.".format(name))
+            self._results["failed"].append(name)
+            return False
+        chain = chain + [name]
+
+        entry = self._pkgtable.get(name)
+        if entry is None:
+            print("[recover] '{}' not found in pkgtable.json -- skipping.".format(name))
+            self._results["failed"].append(name)
+            return False
+
+        try:
+            for dep in entry.get("dependencies", []):
+                dep_name = dep.get("name") if isinstance(dep, dict) else dep
+                if not dep_name:
+                    continue
+                if not self._restore_package(dep_name, installed, seen, chain):
+                    print("[recover] Dependency '{}' failed -- cannot restore '{}'.".format(dep_name, name))
+                    self._results["failed"].append(name)
+                    return False
+
+            filename = entry.get("file", "").split("/")[-1]
+            target_path = self._full_path(entry.get("install_path"), filename)
+            record = installed.get(name)
+
+            if record:
+                existing_path = self._full_path(record.get("install_path"), record.get("filename"))
+                healthy = self._file_is_healthy(existing_path)
+                same_version = record.get("version") == entry.get("version")
+
+                if healthy and same_version:
+                    return True  # already good, nothing to do
+
+                if healthy and not same_version:
+                    # present and readable, just out of date -- don't
+                    # clobber it, just flag it for a normal update later
+                    record["update needed"] = True
+                    self._results["updated_flagged"].append(name)
+                    return True
+                # else: missing or corrupted -- fall through and repair it
+
+            data = self._http_get_text(self._raw_url(
+                entry.get("author"), entry.get("repository"), entry.get("branch"), entry.get("file")))
+            if data is None:
+                self._results["failed"].append(name)
+                return False
+
+            if not self._write_and_verify(target_path, data):
+                self._results["failed"].append(name)
+                return False
+
+            installed[name] = {
+                "name": entry.get("name", name),
+                "version": entry.get("version"),
+                "author": entry.get("author"),
+                "repository": entry.get("repository"),
+                "branch": entry.get("branch") or "main",
+                "install_path": entry.get("install_path"),
+                "filename": filename,
+                "dependencies": entry.get("dependencies", []),
+                "core": bool(entry.get("core", False)),
+            }
+            self._results["installed"].append(name)
+            print("[recover] Restored '{}' v{}.".format(name, entry.get("version")))
+            return True
+
+        except Exception as e:
+            print("[recover] Unexpected error restoring '{}': {}".format(name, e))
+            self._results["failed"].append(name)
+            return False
 # =================================================
 # SERVICES IMPORT  (must never prevent ZenCMD from booting)
 # =================================================
@@ -1274,11 +1672,6 @@ def _cmd_recover(args):
     Deliberately implemented in a standalone /Recovery.py module that never
     imports anything from /Services, so this works even when Services,
     PackageManager, Git, Network, or zeno.py are missing/corrupted."""
-    try:
-        from Recovery import Recovery
-    except Exception as e:
-        print("[recover] Could not load the Recovery module:", e)
-        return
     try:
         rec = Recovery()
         rec.run()
