@@ -45,17 +45,6 @@
     "modules": [],
     "core": true
   },
-  "banner": {
-    "name": "banner",
-    "version": "1.2.0",
-    "author": "FerrariForever95",
-    "repository": "banner",
-    "branch": "main",
-    "file": "banner.py",
-    "install_path": "/bin/banner",
-    "dependencies": [],
-    "modules": []
-  },
   "sum": {
     "name": "sum",
     "version": "1.0.0",
