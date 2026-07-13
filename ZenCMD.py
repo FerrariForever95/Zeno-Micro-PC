@@ -1,12 +1,53 @@
 print("ZenCMD/2 initializing...")
 
-from Services import (
-    Network, Disk, downloadhelper, system, Logger, Git,
-    BluetoothManager, BootConfig, usermanager, FileManager, PackageManager,
-)
+# =================================================
+# SERVICES IMPORT  (must never prevent ZenCMD from booting)
+# =================================================
+# ZenCMD has to be able to boot -- and always offer 'recover' -- even if
+# /Services is missing entirely, or any single class inside it is missing
+# or broken. So the whole package is imported defensively and every
+# individual service is resolved with getattr(..., None) rather than a
+# plain "from Services import X, Y, Z" that would raise ImportError for
+# the lot the moment any one name is unavailable.
+try:
+    import Services
+except Exception as e:
+    Services = None
+    print("[ZenCMD] Warning: /Services unavailable ({}). Running in degraded/recovery mode.".format(e))
+
+
+def _svc(name):
+    return getattr(Services, name, None) if Services is not None else None
+
+
+Network          = _svc("Network")
+Disk             = _svc("Disk")
+downloadhelper   = _svc("downloadhelper")
+system           = _svc("system")
+Logger           = _svc("Logger")
+Git              = _svc("Git")
+BluetoothManager = _svc("BluetoothManager")
+BootConfig       = _svc("BootConfig")
+usermanager      = _svc("usermanager")
+FileManager      = _svc("FileManager")
+PackageManager   = _svc("PackageManager")
+
 import os
 import sys
-import zeno
+
+# zeno.py may be missing/corrupted too -- fall back to a stub object so
+# every existing "zeno.user" / "zeno.hostname" reference below keeps
+# working without needing to be rewritten one by one.
+try:
+    import zeno
+except Exception as e:
+    print("[ZenCMD] Warning: zeno.py unavailable ({}). Run 'recover' to rebuild it.".format(e))
+
+    class _FallbackZeno:
+        user = "recovery"
+        hostname = "zeno-device"
+
+    zeno = _FallbackZeno()
 
 # =================================================
 # VERSION
@@ -15,16 +56,29 @@ ZENCMD_VERSION = "2.2.0"
 ZENOS_NAME     = "Zeno OS"
 
 # =================================================
-# LOGGER
+# LOGGER  (falls back to a no-op/print logger if the Logger service is gone)
 # =================================================
-logger = Logger()
+class _NullLogger:
+    def debug(self, msg, source=None):
+        pass
+
+    def warning(self, msg, source=None):
+        print("[WARN] {}".format(msg))
+
+    def error(self, msg, source=None):
+        print("[ERROR] {}".format(msg))
+
+
+logger = Logger() if Logger else _NullLogger()
 
 # =================================================
-# USER MANAGER / FILE MANAGER  (single instances, never duplicated)
+# USER MANAGER / FILE MANAGER / PACKAGE MANAGER  (single instances, never
+# duplicated -- any of these may legitimately be None if Services is
+# missing or corrupted; every call site below is expected to tolerate that)
 # =================================================
-_um = usermanager()
-_fm = FileManager()   # <-- ALL filesystem access goes through here, no raw os/open()
-_pm = PackageManager()
+_um = usermanager() if usermanager else None
+_fm = FileManager() if FileManager else None   # <-- ALL filesystem access goes through here when available
+_pm = PackageManager() if PackageManager else None
 # =================================================
 # MODULE REGISTRY
 # =================================================
@@ -32,7 +86,11 @@ _pm = PackageManager()
 # anywhere in Services, so leaving it wired in here would crash ZenCMD
 # at import time with NameError the moment MODULES is built. Re-add it
 # once a real ZenZip implementation exists and is imported above.
-MODULES = {
+#
+# Only services that actually loaded are registered here -- if Services
+# is missing or partially broken, "enter <module>" / "pkg install ..."
+# just reports "No such module" instead of crashing ZenCMD.
+_ALL_MODULES = {
     "net":          Network,
     "disk":         Disk,
     "downserv":     downloadhelper,
@@ -43,6 +101,7 @@ MODULES = {
     "bluetoothmgr": BluetoothManager,
     "pkg":          PackageManager,
 }
+MODULES = {k: v for k, v in _ALL_MODULES.items() if v is not None}
 
 # Commands that require Super Mode.
 # Checked as prefix-match so "bootmgr <anything>" is caught.
@@ -51,6 +110,9 @@ MODULES = {
 # gates package-manager methods -- "install", "uninstall", "reinstall"
 # and "update" all require Super Mode whether typed as "pkg install foo",
 # as a one-shot module call, or from inside "enter pkg".
+#
+# 'recover' is deliberately NOT in this list: it must remain usable even
+# when usermanager/Super Mode itself is unavailable (e.g. Services is gone).
 PRIVILEGED_PREFIXES = (
     "bootmgr",
     "mount",
@@ -98,7 +160,12 @@ _PIPE_IN       = None        # list[str] of lines fed in from a "|" pipeline, el
 # =================================================
 
 def _is_super():
-    return _um.isrooted(zeno.user)
+    if _um is None:
+        return False
+    try:
+        return _um.isrooted(zeno.user)
+    except Exception:
+        return False
 
 
 def _require_super(cmd_word):
@@ -478,6 +545,7 @@ BUILTIN_HELP = {
     "leave":       "leave                 Leave current module",
     "sysrun":      "sysrun <file>         Run a .py file or open a file",
     "pkgrun":      "pkgrun <pkg> [args]   Run an installed package",
+    "recover":     "recover               Rebuild core OS from pkgtable.json (always works)",
     "help":        "help [cmd|module]     Show help",
     "exit":        "exit / quit           Exit module or ZenCMD",
     "quit":        "quit                  Alias for exit",
@@ -506,6 +574,8 @@ def _shell_help():
               "reload", "reloadmodule", "mountzfs", "bootlog", "log",
               "shutdown", "reboot", "factory"):
         print(" ", BUILTIN_HELP[k])
+    print("\nRecovery (always available, even with a broken /Services)")
+    print(" ", BUILTIN_HELP["recover"])
     print("\nPackages: 'enter pkg' or 'pkg <install|uninstall|reinstall|update|")
     print("info|list|verify|run> ...'. install/uninstall/reinstall/update")
     print("require Super Mode. Use 'pkgrun <pkg> [args]' to run one directly.")
@@ -525,6 +595,10 @@ def _shell_help():
 def _cmd_super():
     if _is_super():
         print("Already in Super Mode.")
+        return
+    if _um is None:
+        print("Super Mode is unavailable (usermanager service is missing). "
+              "Recovery-critical commands like 'recover' don't need it.")
         return
     try:
         pwd = input(f"Enter password for {zeno.user}: ")
@@ -874,12 +948,18 @@ def _cmd_history(args):
 
 
 def _cmd_userdebug(args):
+    if _um is None:
+        print("  usermanager service unavailable.")
+        return
     debug = _um.userdebug() if hasattr(_um, "userdebug") else _um.userinfo()
     print(f"  User   : {debug.get('user', '?')}")
     print(f"  Rooted : {debug.get('root', False)}")
 
 
 def _cmd_whoisroot(args):
+    if _um is None:
+        print("usermanager service unavailable.")
+        return
     rooted = _um.isrooted(zeno.user)
     if rooted:
         print(f"{zeno.user} is in Super Mode (rooted).")
@@ -1180,10 +1260,32 @@ def _cmd_pkgrun(args):
     if not args:
         print("Usage: pkgrun <package> [args...]")
         return
+    if PackageManager is None:
+        print("[pkgrun] PackageManager service is unavailable. Try 'recover' first.")
+        return
     name     = args[0]
     pkg_args = [convert_arg(a) for a in args[1:]]
     pm = PackageManager()
     pm.run(name, *pkg_args)
+
+
+def _cmd_recover(args):
+    """recover -- rebuild core OS components from pkgtable.json.
+    Deliberately implemented in a standalone /Recovery.py module that never
+    imports anything from /Services, so this works even when Services,
+    PackageManager, Git, Network, or zeno.py are missing/corrupted."""
+    try:
+        from Recovery import Recovery
+    except Exception as e:
+        print("[recover] Could not load the Recovery module:", e)
+        return
+    try:
+        rec = Recovery()
+        rec.run()
+    except KeyboardInterrupt:
+        print("\n[recover] Interrupted.")
+    except Exception as e:
+        print("[recover] Recovery failed:", e)
 
 
 # =================================================
@@ -1279,6 +1381,8 @@ BUILTINS = {
     "modules":      (_cmd_modules,   False),
     "sysrun":       (_cmd_sysrun,    False),
     "pkgrun":       (_cmd_pkgrun,    False),
+    # Recovery -- always available, no Super Mode required
+    "recover":      (_cmd_recover,   False),
     # Privileged
     "mount":        (_cmd_mount,     True),
     "mountzfs":     (_cmd_mountzfs,  True),
@@ -1435,7 +1539,7 @@ def _execute(raw):
             return
         handler(args)
         return
-    if verb in _pm.list():
+    if _pm is not None and verb in _pm.list():
         _pm.run(verb)
         logger.debug(f"Module call: {verb}", source="ZenCMD")
         return
@@ -1511,6 +1615,9 @@ def handle(raw):
 # =================================================
 print(f"\n{ZENOS_NAME} — ZenCMD {ZENCMD_VERSION}")
 print(f"Logged in as: {zeno.user}")
+if Services is None:
+    print("[ZenCMD] Services unavailable -- most commands are disabled.")
+    print("[ZenCMD] Run 'recover' to rebuild the OS from pkgtable.json.")
 print("Type 'help' for commands.\n")
 logger.debug(f"ZenCMD started, user={zeno.user}", source="ZenCMD")
 
