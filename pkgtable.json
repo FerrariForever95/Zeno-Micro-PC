@@ -96,5 +96,17 @@
       "urandom"
     ],
     "core": true
+  },
+  "disptest": {
+    "name": "disptest",
+    "version": "2.3",
+    "author": "FerrariForever95",
+    "repository": "core",
+    "branch": "main",
+    "file": "lcd.py",
+    "install_path": "/",
+    "dependencies": [],
+    "modules": [],
+    "core": false
   }
 }
