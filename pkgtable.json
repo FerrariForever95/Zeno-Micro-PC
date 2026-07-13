@@ -53,7 +53,8 @@
     "file": "ZenCMD.py",
     "install_path": "/",
     "dependencies": [],
-    "modules": []
+    "modules": [],
+    "core": true
   },
   "banner": {
     "name": "banner",
