@@ -47,5 +47,19 @@
       "json"
     ],
     "core": true
+  },
+  "pystone_lowmem": {
+    "name": "pystone_lowmem",
+    "version": "1.0.0",
+    "author": "FerrariForever95",
+    "repository": "core",
+    "branch": "main",
+    "file": "pystone_lowmem.py",
+    "install_path": "/",
+    "dependencies": [],
+    "modules": [
+      "os"
+    ],
+    "core": true
   }
 }
