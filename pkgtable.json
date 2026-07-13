@@ -13,17 +13,6 @@
       "urequests"
     ]
   },
-  "agent": {
-    "name": "agent",
-    "version": "1.2.8",
-    "author": "prem1306",
-    "repository": "My-AI-agent",
-    "branch": "main",
-    "file": "cli.py",
-    "install_path": "/bin/agent",
-    "dependencies": [],
-    "modules": []
-  },
   "hello-world": {
     "name": "hello-world",
     "version": "1.0.2",
