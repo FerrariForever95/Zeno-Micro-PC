@@ -62,7 +62,8 @@
     "install_path": "/",
     "dependencies": [],
     "modules": [
-      "os"
+      "os",
+      "urandom"
     ],
     "core": true
   }
