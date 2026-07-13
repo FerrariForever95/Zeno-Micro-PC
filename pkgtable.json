@@ -1,18 +1,4 @@
 {
-  "weather": {
-    "name": "weather",
-    "version": "1.0.4",
-    "author": "FerrariForever95",
-    "repository": "weather",
-    "branch": "main",
-    "file": "weather.py",
-    "install_path": "/bin/weather",
-    "dependencies": [],
-    "modules": [
-      "network",
-      "urequests"
-    ]
-  },
   "ZenCMD": {
     "name": "ZenCMD",
     "version": "3.45",
