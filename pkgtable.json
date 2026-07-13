@@ -81,5 +81,20 @@
       "urandom"
     ],
     "core": true
+  },
+  "Graphics": {
+    "name": "Graphics",
+    "version": "1.0.0",
+    "author": "FerrariForever95",
+    "repository": "core",
+    "branch": "main",
+    "file": "Graphics.py",
+    "install_path": "/",
+    "dependencies": [],
+    "modules": [
+      "os",
+      "urandom"
+    ],
+    "core": true
   }
 }
