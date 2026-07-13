@@ -3,7 +3,7 @@
     "name": "ZenCMD",
     "version": "3.79",
     "author": "FerrariForever95",
-    "repository": "Zeno-Micro-PC",
+    "repository": "core",
     "file": "ZenCMD.py",
     "install_path": "/",
     "dependencies": [],
