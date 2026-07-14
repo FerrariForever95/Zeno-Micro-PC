@@ -50,7 +50,7 @@
       "micropython",
       "ubluetooth"
     ],
-    "core": false
+    "core": true
   },
   "pystone_lowmem": {
     "name": "pystone_lowmem",
