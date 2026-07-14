@@ -30,7 +30,27 @@
     "file": "Services.py",
     "install_path": "/",
     "dependencies": [],
-    "modules": [],
+    "modules": [
+      "time",
+      "os",
+      "machine",
+      "hashlib",
+      "ucryptolib",
+      "network",
+      "gc",
+      "pystone_lowmem",
+      "json",
+      "urequests",
+      "usocket",
+      "ntptime",
+      "ssl",
+      "micropython",
+      "ubluetooth",
+      "sys",
+      "zeno",
+      "zfs",
+      "firmware"
+    ],
     "core": true
   },
   "firmware": {
