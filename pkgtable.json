@@ -133,7 +133,7 @@
     "name": "healthmonitor",
     "version": "1.0.0",
     "author": "FerrariForever95",
-    "repository": "Zeno-Micro-PC",
+    "repository": "core",
     "file": "healthmonitor.py",
     "install_path": "/bin/healthmonitor",
     "description": "a system health monitor",
