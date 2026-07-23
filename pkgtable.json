@@ -98,7 +98,8 @@
     "repository": "core",
     "branch": "main",
     "file": "recovery.py",
-    "install_path": "/",
+    "install_path": "/bin/recovery",
+    "description": "recovery shell for Zeno OS",
     "dependencies": [],
     "modules": [
       "os",
