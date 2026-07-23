@@ -82,7 +82,8 @@
     "repository": "core",
     "branch": "main",
     "file": "pystone_lowmem.py",
-    "install_path": "/",
+    "install_path": "/bin/pystone_lowmem",
+    "description": "benchmarking software for Zeno OS",
     "dependencies": [],
     "modules": [
       "os",
