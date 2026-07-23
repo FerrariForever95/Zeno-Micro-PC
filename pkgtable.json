@@ -140,5 +140,20 @@
     "dependencies": [],
     "modules": [],
     "core": true
+  },
+  "syspathmanager": {
+    "name": "syspathmanager",
+    "version": "1.0.0",
+    "author": "FerrariForever95",
+    "repository": "core",
+    "file": "syspathmanager.py",
+    "install_path": "/bin/syspathmanager",
+    "description": "syspathmanager is a path manager to append path with importing modules correctly",
+    "dependencies": [],
+    "modules": [
+      "sys",
+      "os"
+    ],
+    "core": true
   }
 }
