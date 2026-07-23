@@ -61,6 +61,7 @@
     "branch": "main",
     "file": "firmware.mpy",
     "install_path": "/",
+    "description": "main firmware of Zeno-Micro-PC",
     "dependencies": [],
     "modules": [
       "os",
@@ -70,7 +71,7 @@
       "micropython",
       "ubluetooth"
     ],
-    "core": true
+    "core": false
   },
   "pystone_lowmem": {
     "name": "pystone_lowmem",
