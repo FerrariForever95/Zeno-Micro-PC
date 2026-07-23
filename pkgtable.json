@@ -110,7 +110,7 @@
     "repository": "core",
     "branch": "main",
     "file": "Graphics.py",
-    "install_path": "/bin/",
+    "install_path": "/bin/Graphics",
     "description": "Graphics service for Zeno OS",
     "dependencies": [],
     "modules": [
