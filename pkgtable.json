@@ -129,8 +129,9 @@
     "author": "FerrariForever95",
     "repository": "core",
     "branch": "main",
-    "file": "lcd.py",
+    "file": "modules/lcd.py",
     "install_path": "/",
+    "description": "disptest software",
     "dependencies": [],
     "modules": [],
     "core": false
