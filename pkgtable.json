@@ -28,7 +28,7 @@
     "version": "7.20.8",
     "author": "FerrariForever95",
     "repository": "core",
-    "file": "Services.py",
+    "file": "modules/Services.py",
     "install_path": "/bin/Services",
     "description": "Services modules , complete funcitonality of OS",
     "dependencies": [],
