@@ -5,7 +5,8 @@
     "author": "FerrariForever95",
     "repository": "core",
     "file": "ZenCMD.py",
-    "install_path": "/",
+    "install_path": "/bin/ZenCMD",
+    "description": "ZenCMD is a REPL- Based CLI to access files",
     "dependencies": [],
     "modules": [],
     "core": true
