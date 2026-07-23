@@ -61,7 +61,7 @@
     "author": "FerrariForever95",
     "repository": "core",
     "branch": "main",
-    "file": "firmware.mpy",
+    "file": "modules/firmware.mpy",
     "install_path": "/",
     "description": "main firmware of Zeno-Micro-PC",
     "dependencies": [],
