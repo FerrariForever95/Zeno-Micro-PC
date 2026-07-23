@@ -81,7 +81,7 @@
     "author": "FerrariForever95",
     "repository": "core",
     "branch": "main",
-    "file": "pystone_lowmem.py",
+    "file": "modules/pystone_lowmem.py",
     "install_path": "/bin/pystone_lowmem",
     "description": "benchmarking software for Zeno OS",
     "dependencies": [],
