@@ -113,7 +113,7 @@
     "author": "FerrariForever95",
     "repository": "core",
     "branch": "main",
-    "file": "Graphics.py",
+    "file": "modules/Graphics.py",
     "install_path": "/bin/Graphics",
     "description": "Graphics service for Zeno OS",
     "dependencies": [],
