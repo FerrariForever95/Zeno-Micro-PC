@@ -1,4 +1,154 @@
 {
+  "logger": {
+    "name": "logger",
+    "version": "1.0.0",
+    "author": "FerrariForever95",
+    "repository": "core",
+    "branch": "main",
+    "file": "logger.py",
+    "install_path": "/bin/logger",
+    "description": "system logger -- zero dependencies, loads first",
+    "dependencies": [],
+    "modules": [],
+    "core": true
+  },
+  "power": {
+    "name": "power",
+    "version": "1.0.0",
+    "author": "FerrariForever95",
+    "repository": "core",
+    "branch": "main",
+    "file": "power.py",
+    "install_path": "/bin/power",
+    "description": "CPU frequency / boost management",
+    "dependencies": [],
+    "modules": [],
+    "core": true
+  },
+  "filesystem": {
+    "name": "filesystem",
+    "version": "1.0.0",
+    "author": "FerrariForever95",
+    "repository": "core",
+    "branch": "main",
+    "file": "filesystem.py",
+    "install_path": "/bin/filesystem",
+    "description": "VFS facade -- FileManager, dewrapper, path helpers",
+    "dependencies": [],
+    "modules": [],
+    "core": true
+  },
+  "security": {
+    "name": "security",
+    "version": "1.0.0",
+    "author": "FerrariForever95",
+    "repository": "core",
+    "branch": "main",
+    "file": "security.py",
+    "install_path": "/bin/security",
+    "description": "privilege / user / session model",
+    "dependencies": [
+      { "name": "filesystem", "version": "1.0.0" },
+      { "name": "process", "version": "1.0.0" }
+    ],
+    "modules": [],
+    "core": true
+  },
+  "process": {
+    "name": "process",
+    "version": "1.0.0",
+    "author": "FerrariForever95",
+    "repository": "core",
+    "branch": "main",
+    "file": "process.py",
+    "install_path": "/bin/process",
+    "description": "process model + scheduler",
+    "dependencies": [],
+    "modules": [],
+    "core": true
+  },
+  "network": {
+    "name": "network",
+    "version": "1.0.0",
+    "author": "FerrariForever95",
+    "repository": "core",
+    "branch": "main",
+    "file": "network.py",
+    "install_path": "/bin/network",
+    "description": "WiFi networking -- WifiManager, watchdog",
+    "dependencies": [
+      { "name": "logger", "version": "1.0.0" }
+    ],
+    "modules": [],
+    "core": true
+  },
+  "packages": {
+    "name": "packages",
+    "version": "1.0.0",
+    "author": "FerrariForever95",
+    "repository": "core",
+    "branch": "main",
+    "file": "packages.py",
+    "install_path": "/bin/packages",
+    "description": "PackageManager, Git, AppDB, AppInstaller, Wiki, downloadhelper",
+    "dependencies": [
+      { "name": "logger", "version": "1.0.0" },
+      { "name": "filesystem", "version": "1.0.0" },
+      { "name": "security", "version": "1.0.0" },
+      { "name": "system", "version": "1.0.0" }
+    ],
+    "modules": [],
+    "core": true
+  },
+  "system": {
+    "name": "system",
+    "version": "1.0.0",
+    "author": "FerrariForever95",
+    "repository": "core",
+    "branch": "main",
+    "file": "system.py",
+    "install_path": "/bin/system",
+    "description": "low-level system control, Disk, BootConfig, BluetoothManager, IoTManager",
+    "dependencies": [
+      { "name": "logger", "version": "1.0.0" }
+    ],
+    "modules": [],
+    "core": true
+  },
+  "Services": {
+    "name": "Services",
+    "version": "8.0.0",
+    "author": "FerrariForever95",
+    "repository": "core",
+    "branch": "main",
+    "file": "Services.py",
+    "install_path": "/bin/Services",
+    "description": "compatibility shim re-exporting logger/power/filesystem/security/process/network/packages/system",
+    "dependencies": [
+      { "name": "logger", "version": "1.0.0" },
+      { "name": "power", "version": "1.0.0" },
+      { "name": "filesystem", "version": "1.0.0" },
+      { "name": "security", "version": "1.0.0" },
+      { "name": "process", "version": "1.0.0" },
+      { "name": "network", "version": "1.0.0" },
+      { "name": "packages", "version": "1.0.0" },
+      { "name": "system", "version": "1.0.0" }
+    ],
+    "modules": [],
+    "core": true
+  },
+  "syspathmanager": {
+    "name": "syspathmanager",
+    "version": "1.0.0",
+    "author": "FerrariForever95",
+    "repository": "core",
+    "file": "modules/syspathmanager.py",
+    "install_path": "/bin/syspathmanager",
+    "description": "syspathmanager is a path manager to append path with importing modules correctly",
+    "dependencies": [],
+    "modules": ["sys", "os"],
+    "core": true
+  },
   "ZenCMD": {
     "name": "ZenCMD",
     "version": "3.81",
@@ -23,38 +173,6 @@
     "modules": [],
     "core": false
   },
-  "Services": {
-    "name": "Services",
-    "version": "7.20.9",
-    "author": "FerrariForever95",
-    "repository": "core",
-    "file": "/Services.py",
-    "install_path": "/bin/Services",
-    "description": "Services modules , complete funcitonality of OS",
-    "dependencies": [],
-    "modules": [
-      "time",
-      "os",
-      "machine",
-      "hashlib",
-      "ucryptolib",
-      "network",
-      "gc",
-      "pystone_lowmem",
-      "json",
-      "urequests",
-      "usocket",
-      "ntptime",
-      "ssl",
-      "micropython",
-      "ubluetooth",
-      "sys",
-      "zeno",
-      "zfs",
-      "firmware"
-    ],
-    "core": true
-  },
   "firmware": {
     "name": "firmware",
     "version": "4.3.3",
@@ -65,14 +183,7 @@
     "install_path": "/",
     "description": "main firmware of Zeno-Micro-PC",
     "dependencies": [],
-    "modules": [
-      "os",
-      "json",
-      "network",
-      "sys",
-      "micropython",
-      "ubluetooth"
-    ],
+    "modules": ["os", "json", "network", "sys", "micropython", "ubluetooth"],
     "core": false
   },
   "pystone_lowmem": {
@@ -85,10 +196,7 @@
     "install_path": "/bin/pystone_lowmem",
     "description": "benchmarking software for Zeno OS",
     "dependencies": [],
-    "modules": [
-      "os",
-      "urandom"
-    ],
+    "modules": ["os", "urandom"],
     "core": true
   },
   "recovery": {
@@ -101,10 +209,7 @@
     "install_path": "/bin/recovery",
     "description": "recovery shell for Zeno OS",
     "dependencies": [],
-    "modules": [
-      "os",
-      "urandom"
-    ],
+    "modules": ["os", "urandom"],
     "core": true
   },
   "Graphics": {
@@ -117,10 +222,7 @@
     "install_path": "/bin/Graphics",
     "description": "Graphics service for Zeno OS",
     "dependencies": [],
-    "modules": [
-      "os",
-      "urandom"
-    ],
+    "modules": ["os", "urandom"],
     "core": true
   },
   "disptest": {
@@ -146,21 +248,6 @@
     "description": "a system health monitor",
     "dependencies": [],
     "modules": [],
-    "core": true
-  },
-  "syspathmanager": {
-    "name": "syspathmanager",
-    "version": "1.0.0",
-    "author": "FerrariForever95",
-    "repository": "core",
-    "file": "modules/syspathmanager.py",
-    "install_path": "/bin/syspathmanager",
-    "description": "syspathmanager is a path manager to append path with importing modules correctly",
-    "dependencies": [],
-    "modules": [
-      "sys",
-      "os"
-    ],
     "core": true
   }
 }
