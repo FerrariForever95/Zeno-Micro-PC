@@ -48,8 +48,14 @@
     "install_path": "/bin/security",
     "description": "privilege / user / session model",
     "dependencies": [
-      { "name": "filesystem", "version": "1.0.0" },
-      { "name": "process", "version": "1.0.0" }
+      {
+        "name": "filesystem",
+        "version": "1.0.0"
+      },
+      {
+        "name": "process",
+        "version": "1.0.0"
+      }
     ],
     "modules": [],
     "core": true
@@ -77,7 +83,10 @@
     "install_path": "/bin/network",
     "description": "WiFi networking -- WifiManager, watchdog",
     "dependencies": [
-      { "name": "logger", "version": "1.0.0" }
+      {
+        "name": "logger",
+        "version": "1.0.0"
+      }
     ],
     "modules": [],
     "core": true
@@ -92,10 +101,22 @@
     "install_path": "/bin/packages",
     "description": "PackageManager, Git, AppDB, AppInstaller, Wiki, downloadhelper",
     "dependencies": [
-      { "name": "logger", "version": "1.0.0" },
-      { "name": "filesystem", "version": "1.0.0" },
-      { "name": "security", "version": "1.0.0" },
-      { "name": "system", "version": "1.0.0" }
+      {
+        "name": "logger",
+        "version": "1.0.0"
+      },
+      {
+        "name": "filesystem",
+        "version": "1.0.0"
+      },
+      {
+        "name": "security",
+        "version": "1.0.0"
+      },
+      {
+        "name": "system",
+        "version": "1.0.0"
+      }
     ],
     "modules": [],
     "core": true
@@ -110,7 +131,10 @@
     "install_path": "/bin/system",
     "description": "low-level system control, Disk, BootConfig, BluetoothManager, IoTManager",
     "dependencies": [
-      { "name": "logger", "version": "1.0.0" }
+      {
+        "name": "logger",
+        "version": "1.0.0"
+      }
     ],
     "modules": [],
     "core": true
@@ -125,14 +149,38 @@
     "install_path": "/bin/Services",
     "description": "compatibility shim re-exporting logger/power/filesystem/security/process/network/packages/system",
     "dependencies": [
-      { "name": "logger", "version": "1.0.0" },
-      { "name": "power", "version": "1.0.0" },
-      { "name": "filesystem", "version": "1.0.0" },
-      { "name": "security", "version": "1.0.0" },
-      { "name": "process", "version": "1.0.0" },
-      { "name": "network", "version": "1.0.0" },
-      { "name": "packages", "version": "1.0.0" },
-      { "name": "system", "version": "1.0.0" }
+      {
+        "name": "logger",
+        "version": "1.0.0"
+      },
+      {
+        "name": "power",
+        "version": "1.0.0"
+      },
+      {
+        "name": "filesystem",
+        "version": "1.0.0"
+      },
+      {
+        "name": "security",
+        "version": "1.0.0"
+      },
+      {
+        "name": "process",
+        "version": "1.0.0"
+      },
+      {
+        "name": "network",
+        "version": "1.0.0"
+      },
+      {
+        "name": "packages",
+        "version": "1.0.0"
+      },
+      {
+        "name": "system",
+        "version": "1.0.0"
+      }
     ],
     "modules": [],
     "core": true
@@ -146,8 +194,11 @@
     "install_path": "/bin/syspathmanager",
     "description": "syspathmanager is a path manager to append path with importing modules correctly",
     "dependencies": [],
-    "modules": ["sys", "os"],
-    "core": true
+    "modules": [
+      "sys",
+      "os"
+    ],
+    "core": false
   },
   "ZenCMD": {
     "name": "ZenCMD",
@@ -183,7 +234,14 @@
     "install_path": "/",
     "description": "main firmware of Zeno-Micro-PC",
     "dependencies": [],
-    "modules": ["os", "json", "network", "sys", "micropython", "ubluetooth"],
+    "modules": [
+      "os",
+      "json",
+      "network",
+      "sys",
+      "micropython",
+      "ubluetooth"
+    ],
     "core": false
   },
   "pystone_lowmem": {
@@ -196,7 +254,10 @@
     "install_path": "/bin/pystone_lowmem",
     "description": "benchmarking software for Zeno OS",
     "dependencies": [],
-    "modules": ["os", "urandom"],
+    "modules": [
+      "os",
+      "urandom"
+    ],
     "core": true
   },
   "recovery": {
@@ -209,7 +270,10 @@
     "install_path": "/bin/recovery",
     "description": "recovery shell for Zeno OS",
     "dependencies": [],
-    "modules": ["os", "urandom"],
+    "modules": [
+      "os",
+      "urandom"
+    ],
     "core": true
   },
   "Graphics": {
@@ -222,7 +286,10 @@
     "install_path": "/bin/Graphics",
     "description": "Graphics service for Zeno OS",
     "dependencies": [],
-    "modules": ["os", "urandom"],
+    "modules": [
+      "os",
+      "urandom"
+    ],
     "core": true
   },
   "disptest": {
