@@ -25,10 +25,10 @@
   },
   "Services": {
     "name": "Services",
-    "version": "7.20.8",
+    "version": "7.20.9",
     "author": "FerrariForever95",
     "repository": "core",
-    "file": "modules/Services.py",
+    "file": "/Services.py",
     "install_path": "/bin/Services",
     "description": "Services modules , complete funcitonality of OS",
     "dependencies": [],
