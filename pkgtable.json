@@ -1,17 +1,4 @@
 {
-  "power": {
-    "name": "power",
-    "version": "1.0.0",
-    "author": "FerrariForever95",
-    "repository": "core",
-    "branch": "main",
-    "file": "power.py",
-    "install_path": "/bin/power",
-    "description": "CPU frequency / boost management",
-    "dependencies": [],
-    "modules": [],
-    "core": true
-  },
   "security": {
     "name": "security",
     "version": "1.0.0",
