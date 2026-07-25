@@ -118,5 +118,17 @@
     "dependencies": [],
     "modules": [],
     "core": true
+  },
+  "security": {
+    "name": "security",
+    "version": "4.7.9",
+    "author": "FerrariForever95",
+    "repository": "core",
+    "file": "src/security.py",
+    "install_path": "/bin/security",
+    "description": "security system for Zeno OS",
+    "dependencies": [],
+    "modules": [],
+    "core": true
   }
 }
