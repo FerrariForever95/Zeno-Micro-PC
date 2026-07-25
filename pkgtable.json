@@ -154,5 +154,17 @@
     "dependencies": [],
     "modules": [],
     "core": true
+  },
+  "process": {
+    "name": "process",
+    "version": "6.3.2",
+    "author": "FerrariForever95",
+    "repository": "core",
+    "file": "src/process.py",
+    "install_path": "/bin/process",
+    "description": "process manager",
+    "dependencies": [],
+    "modules": [],
+    "core": true
   }
 }
