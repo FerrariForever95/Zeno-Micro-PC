@@ -154,18 +154,6 @@
     ],
     "core": false
   },
-  "ZenCMD": {
-    "name": "ZenCMD",
-    "version": "3.81",
-    "author": "FerrariForever95",
-    "repository": "core",
-    "file": "ZenCMD.py",
-    "install_path": "/bin/ZenCMD",
-    "description": "command prompt mananger for zencmd",
-    "dependencies": [],
-    "modules": [],
-    "core": true
-  },
   "banner": {
     "name": "banner",
     "version": "1.1.3",
