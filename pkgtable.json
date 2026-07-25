@@ -274,7 +274,7 @@
       "os",
       "urandom"
     ],
-    "core": true
+    "core": false
   },
   "Graphics": {
     "name": "Graphics",
