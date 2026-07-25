@@ -46,5 +46,17 @@
     "dependencies": [],
     "modules": [],
     "core": true
+  },
+  "healthmonitor": {
+    "name": "healthmonitor",
+    "version": "1.0.0",
+    "author": "FerrariForever95",
+    "repository": "core",
+    "file": "src/healthmonitor.py",
+    "install_path": "/bin/healthmonitor",
+    "description": "heal;th cheking sevice for Zeno OS",
+    "dependencies": [],
+    "modules": [],
+    "core": false
   }
 }
