@@ -82,5 +82,17 @@
     "dependencies": [],
     "modules": [],
     "core": true
+  },
+  "packages": {
+    "name": "packages",
+    "version": "2.7.9",
+    "author": "FerrariForever95",
+    "repository": "core",
+    "file": "src/packages.py",
+    "install_path": "/bin/packages",
+    "description": "package manger services for Zeno OS",
+    "dependencies": [],
+    "modules": [],
+    "core": true
   }
 }
