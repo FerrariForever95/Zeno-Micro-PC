@@ -139,52 +139,6 @@
     "modules": [],
     "core": true
   },
-  "Services": {
-    "name": "Services",
-    "version": "8.0.0",
-    "author": "FerrariForever95",
-    "repository": "core",
-    "branch": "main",
-    "file": "Services.py",
-    "install_path": "/bin/Services",
-    "description": "compatibility shim re-exporting logger/power/filesystem/security/process/network/packages/system",
-    "dependencies": [
-      {
-        "name": "logger",
-        "version": "1.0.0"
-      },
-      {
-        "name": "power",
-        "version": "1.0.0"
-      },
-      {
-        "name": "filesystem",
-        "version": "1.0.0"
-      },
-      {
-        "name": "security",
-        "version": "1.0.0"
-      },
-      {
-        "name": "process",
-        "version": "1.0.0"
-      },
-      {
-        "name": "network",
-        "version": "1.0.0"
-      },
-      {
-        "name": "packages",
-        "version": "1.0.0"
-      },
-      {
-        "name": "system",
-        "version": "1.0.0"
-      }
-    ],
-    "modules": [],
-    "core": true
-  },
   "syspathmanager": {
     "name": "syspathmanager",
     "version": "1.0.0",
