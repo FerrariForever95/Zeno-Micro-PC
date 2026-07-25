@@ -205,9 +205,9 @@
     "version": "3.81",
     "author": "FerrariForever95",
     "repository": "core",
-    "file": "filemanager.py",
-    "install_path": "/bin/filemanager",
-    "description": "filemanager submodule",
+    "file": "ZenCMD.py",
+    "install_path": "/bin/ZenCMD",
+    "description": "command prompt mananger for zencmd",
     "dependencies": [],
     "modules": [],
     "core": true
