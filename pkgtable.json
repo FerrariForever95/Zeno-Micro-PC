@@ -130,5 +130,17 @@
     "dependencies": [],
     "modules": [],
     "core": true
+  },
+  "system": {
+    "name": "system",
+    "version": "6.3.2",
+    "author": "FerrariForever95",
+    "repository": "core",
+    "file": "src/system.py",
+    "install_path": "/bin/system",
+    "description": "system tools for Zeno OS",
+    "dependencies": [],
+    "modules": [],
+    "core": true
   }
 }
