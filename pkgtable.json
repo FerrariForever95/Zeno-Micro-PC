@@ -21,19 +21,6 @@
     "modules": [],
     "core": true
   },
-  "process": {
-    "name": "process",
-    "version": "1.0.0",
-    "author": "FerrariForever95",
-    "repository": "core",
-    "branch": "main",
-    "file": "process.py",
-    "install_path": "/bin/process",
-    "description": "process model + scheduler",
-    "dependencies": [],
-    "modules": [],
-    "core": true
-  },
   "system": {
     "name": "system",
     "version": "1.0.0",
