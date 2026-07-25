@@ -142,5 +142,17 @@
     "dependencies": [],
     "modules": [],
     "core": true
+  },
+  "power": {
+    "name": "power",
+    "version": "6.3.2",
+    "author": "FerrariForever95",
+    "repository": "core",
+    "file": "src/power.py",
+    "install_path": "/bin/power",
+    "description": "powering system",
+    "dependencies": [],
+    "modules": [],
+    "core": true
   }
 }
