@@ -25,19 +25,6 @@
     "modules": [],
     "core": true
   },
-  "filesystem": {
-    "name": "filesystem",
-    "version": "1.0.0",
-    "author": "FerrariForever95",
-    "repository": "core",
-    "branch": "main",
-    "file": "filesystem.py",
-    "install_path": "/bin/filesystem",
-    "description": "VFS facade -- FileManager, dewrapper, path helpers",
-    "dependencies": [],
-    "modules": [],
-    "core": true
-  },
   "security": {
     "name": "security",
     "version": "1.0.0",
