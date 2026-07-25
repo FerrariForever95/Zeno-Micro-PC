@@ -53,21 +53,5 @@
       "os"
     ],
     "core": false
-  },
-  "recovery": {
-    "name": "recovery",
-    "version": "2.34",
-    "author": "FerrariForever95",
-    "repository": "core",
-    "branch": "main",
-    "file": "modules/recovery.py",
-    "install_path": "/bin/recovery",
-    "description": "recovery shell for Zeno OS",
-    "dependencies": [],
-    "modules": [
-      "os",
-      "urandom"
-    ],
-    "core": false
   }
 }
