@@ -58,5 +58,17 @@
     "dependencies": [],
     "modules": [],
     "core": false
+  },
+  "logger": {
+    "name": "logger",
+    "version": "2.7.9",
+    "author": "FerrariForever95",
+    "repository": "core",
+    "file": "src/logger.py",
+    "install_path": "/bin/logger",
+    "description": "logger support for Zeno OS",
+    "dependencies": [],
+    "modules": [],
+    "core": true
   }
 }
