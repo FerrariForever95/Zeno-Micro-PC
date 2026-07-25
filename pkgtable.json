@@ -47,24 +47,6 @@
     "modules": [],
     "core": true
   },
-  "network": {
-    "name": "network",
-    "version": "1.0.0",
-    "author": "FerrariForever95",
-    "repository": "core",
-    "branch": "main",
-    "file": "network.py",
-    "install_path": "/bin/network",
-    "description": "WiFi networking -- WifiManager, watchdog",
-    "dependencies": [
-      {
-        "name": "logger",
-        "version": "1.0.0"
-      }
-    ],
-    "modules": [],
-    "core": true
-  },
   "packages": {
     "name": "packages",
     "version": "1.0.0",
