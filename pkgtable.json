@@ -54,22 +54,6 @@
     ],
     "core": false
   },
-  "pystone_lowmem": {
-    "name": "pystone_lowmem",
-    "version": "1.0.0",
-    "author": "FerrariForever95",
-    "repository": "core",
-    "branch": "main",
-    "file": "modules/pystone_lowmem.py",
-    "install_path": "/bin/pystone_lowmem",
-    "description": "benchmarking software for Zeno OS",
-    "dependencies": [],
-    "modules": [
-      "os",
-      "urandom"
-    ],
-    "core": true
-  },
   "recovery": {
     "name": "recovery",
     "version": "2.34",
