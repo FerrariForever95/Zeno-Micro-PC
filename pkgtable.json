@@ -1,1 +1,14 @@
-{}
+{
+  "ZenCMD": {
+    "name": "ZenCMD",
+    "version": "3.8.0",
+    "author": "FerrariForever95",
+    "repository": "core",
+    "file": "src/ZenCMD.py",
+    "install_path": "/bin/ZenCMD",
+    "description": "ZenCMD is command prompt support for the system",
+    "dependencies": [],
+    "modules": [],
+    "core": true
+  }
+}
