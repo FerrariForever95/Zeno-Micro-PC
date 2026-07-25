@@ -276,22 +276,6 @@
     ],
     "core": false
   },
-  "Graphics": {
-    "name": "Graphics",
-    "version": "1.1.3",
-    "author": "FerrariForever95",
-    "repository": "core",
-    "branch": "main",
-    "file": "modules/Graphics.py",
-    "install_path": "/bin/Graphics",
-    "description": "Graphics service for Zeno OS",
-    "dependencies": [],
-    "modules": [
-      "os",
-      "urandom"
-    ],
-    "core": true
-  },
   "disptest": {
     "name": "disptest",
     "version": "2.31",
