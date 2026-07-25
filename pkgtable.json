@@ -34,5 +34,17 @@
     "dependencies": [],
     "modules": [],
     "core": true
+  },
+  "filesystem": {
+    "name": "filesystem",
+    "version": "7.2.0",
+    "author": "FerrariForever95",
+    "repository": "core",
+    "file": "src/filesystem.py",
+    "install_path": "/bin/filesystem",
+    "description": "filesystem manger for Zeno OS",
+    "dependencies": [],
+    "modules": [],
+    "core": true
   }
 }
