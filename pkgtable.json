@@ -10,5 +10,17 @@
     "dependencies": [],
     "modules": [],
     "core": true
+  },
+  "Services": {
+    "name": "Services",
+    "version": "7.2.0",
+    "author": "FerrariForever95",
+    "repository": "core",
+    "file": "src/Services.py",
+    "install_path": "/bin/Services",
+    "description": "majpr service management system of zeno os",
+    "dependencies": [],
+    "modules": [],
+    "core": true
   }
 }
