@@ -141,26 +141,6 @@
     ],
     "core": false
   },
-  "firmware": {
-    "name": "firmware",
-    "version": "4.3.3",
-    "author": "FerrariForever95",
-    "repository": "core",
-    "branch": "main",
-    "file": "modules/firmware.mpy",
-    "install_path": "/",
-    "description": "main firmware of Zeno-Micro-PC",
-    "dependencies": [],
-    "modules": [
-      "os",
-      "json",
-      "network",
-      "sys",
-      "micropython",
-      "ubluetooth"
-    ],
-    "core": false
-  },
   "pystone_lowmem": {
     "name": "pystone_lowmem",
     "version": "1.0.0",
