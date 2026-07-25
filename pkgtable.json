@@ -22,5 +22,17 @@
     "dependencies": [],
     "modules": [],
     "core": true
+  },
+  "Graphics": {
+    "name": "Graphics",
+    "version": "7.2.0",
+    "author": "FerrariForever95",
+    "repository": "core",
+    "file": "src/Graphics.py",
+    "install_path": "/bin/Graphics",
+    "description": "Graphics support for Zeno os",
+    "dependencies": [],
+    "modules": [],
+    "core": true
   }
 }
