@@ -70,5 +70,17 @@
     "dependencies": [],
     "modules": [],
     "core": true
+  },
+  "netservice": {
+    "name": "netservice",
+    "version": "2.7.9",
+    "author": "FerrariForever95",
+    "repository": "core",
+    "file": "src/netservice.py",
+    "install_path": "/bin/netservice",
+    "description": "networking capablity services",
+    "dependencies": [],
+    "modules": [],
+    "core": true
   }
 }
