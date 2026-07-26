@@ -1,1 +1,101 @@
-{"ZenCMD": {"name": "ZenCMD", "author": "FerrariForever95", "repository": "core", "branch": "main", "file": "bin/ZenCMD/ZenCMD.py", "install_path": "/bin/ZenCMD", "version": "3.81", "core": true, "dependencies": [], "modules": []}, "Services": {"name": "Services", "author": "FerrariForever95", "repository": "core", "branch": "main", "file": "bin/Services/Services.py", "install_path": "/bin/Services", "version": "8.0.0", "core": true, "dependencies": [], "modules": ["pystone_lowmem"]}, "pystone_lowmem": {"name": "pystone_lowmem", "author": "FerrariForever95", "repository": "core", "branch": "main", "file": "bin/pystone_lowmem/pystone_lowmem.py", "install_path": "/bin/pystone_lowmem", "version": "1.0.0", "core": true, "dependencies": [], "modules": []}, "Graphics": {"name": "Graphics", "author": "FerrariForever95", "repository": "core", "branch": "main", "file": "bin/Graphics/Graphics.py", "install_path": "/bin/Graphics", "version": "1.1.3", "core": true, "dependencies": [], "modules": []}, "healthmonitor": {"name": "healthmonitor", "author": "FerrariForever95", "repository": "core", "branch": "main", "file": "bin/healthmonitor/healthmonitor.py", "install_path": "/bin/healthmonitor", "version": "1.0.0", "core": true, "dependencies": [], "modules": []}, "banner": {"name": "banner", "author": "FerrariForever95", "repository": "banner", "branch": "main", "file": "bin/banner/banner.py", "install_path": "/bin/banner", "version": "1.1.3", "core": false, "dependencies": [], "modules": []}, "Wiki": {"name": "Wiki", "author": "FerrariForever95", "repository": "core", "branch": "main", "file": "bin/Wiki/Wiki.py", "install_path": "/bin/Wiki", "version": "1.0.0", "core": false, "dependencies": [], "modules": []}, "recovery": {"name": "recovery", "author": "FerrariForever95", "repository": "core", "branch": "main", "file": "bin/recovery/recovery.py", "install_path": "/bin/recovery", "version": "2.34", "core": false, "dependencies": [], "modules": []}}
+{
+  "ZenCMD": {
+    "name": "ZenCMD",
+    "author": "FerrariForever95",
+    "repository": "core",
+    "branch": "main",
+    "file": "bin/ZenCMD/ZenCMD.py",
+    "install_path": "/bin/ZenCMD",
+    "version": "3.81",
+    "core": true,
+    "dependencies": [],
+    "modules": []
+  },
+  "Services": {
+    "name": "Services",
+    "version": "8.0.0",
+    "author": "FerrariForever95",
+    "repository": "core",
+    "branch": "main",
+    "file": "src/compiled/Services.py",
+    "install_path": "/bin/Services",
+    "description": "Serives package for zeno os",
+    "dependencies": [],
+    "modules": [
+      "pystone_lowmem"
+    ],
+    "core": true
+  },
+  "pystone_lowmem": {
+    "name": "pystone_lowmem",
+    "author": "FerrariForever95",
+    "repository": "core",
+    "branch": "main",
+    "file": "bin/pystone_lowmem/pystone_lowmem.py",
+    "install_path": "/bin/pystone_lowmem",
+    "version": "1.0.0",
+    "core": true,
+    "dependencies": [],
+    "modules": []
+  },
+  "Graphics": {
+    "name": "Graphics",
+    "author": "FerrariForever95",
+    "repository": "core",
+    "branch": "main",
+    "file": "bin/Graphics/Graphics.py",
+    "install_path": "/bin/Graphics",
+    "version": "1.1.3",
+    "core": true,
+    "dependencies": [],
+    "modules": []
+  },
+  "healthmonitor": {
+    "name": "healthmonitor",
+    "author": "FerrariForever95",
+    "repository": "core",
+    "branch": "main",
+    "file": "bin/healthmonitor/healthmonitor.py",
+    "install_path": "/bin/healthmonitor",
+    "version": "1.0.0",
+    "core": true,
+    "dependencies": [],
+    "modules": []
+  },
+  "banner": {
+    "name": "banner",
+    "author": "FerrariForever95",
+    "repository": "banner",
+    "branch": "main",
+    "file": "bin/banner/banner.py",
+    "install_path": "/bin/banner",
+    "version": "1.1.3",
+    "core": false,
+    "dependencies": [],
+    "modules": []
+  },
+  "Wiki": {
+    "name": "Wiki",
+    "author": "FerrariForever95",
+    "repository": "core",
+    "branch": "main",
+    "file": "bin/Wiki/Wiki.py",
+    "install_path": "/bin/Wiki",
+    "version": "1.0.0",
+    "core": false,
+    "dependencies": [],
+    "modules": []
+  },
+  "recovery": {
+    "name": "recovery",
+    "author": "FerrariForever95",
+    "repository": "core",
+    "branch": "main",
+    "file": "bin/recovery/recovery.py",
+    "install_path": "/bin/recovery",
+    "version": "2.34",
+    "core": false,
+    "dependencies": [],
+    "modules": []
+  }
+}
