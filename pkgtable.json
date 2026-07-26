@@ -55,15 +55,16 @@
   },
   "healthmonitor": {
     "name": "healthmonitor",
+    "version": "1.0.0",
     "author": "FerrariForever95",
     "repository": "core",
     "branch": "main",
-    "file": "bin/healthmonitor/healthmonitor.py",
+    "file": "src/healthmonitor.py",
     "install_path": "/bin/healthmonitor",
-    "version": "1.0.0",
-    "core": true,
+    "description": "healthmonitoring daemon for Zeno OS",
     "dependencies": [],
-    "modules": []
+    "modules": [],
+    "core": true
   },
   "banner": {
     "name": "banner",
