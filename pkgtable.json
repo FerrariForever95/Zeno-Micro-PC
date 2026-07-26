@@ -29,15 +29,16 @@
   },
   "pystone_lowmem": {
     "name": "pystone_lowmem",
+    "version": "1.0.0",
     "author": "FerrariForever95",
     "repository": "core",
     "branch": "main",
-    "file": "bin/pystone_lowmem/pystone_lowmem.py",
+    "file": "src/pystone_lowmem.py",
     "install_path": "/bin/pystone_lowmem",
-    "version": "1.0.0",
-    "core": true,
+    "description": "bench mark tester",
     "dependencies": [],
-    "modules": []
+    "modules": [],
+    "core": true
   },
   "Graphics": {
     "name": "Graphics",
