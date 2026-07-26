@@ -48,7 +48,7 @@
     "branch": "main",
     "file": "src/Graphics.py",
     "install_path": "/bin/Graphics",
-    "description": "Graphics package for Zeno oS",
+    "description": "Graphics package for Zeno OS",
     "dependencies": [],
     "modules": [],
     "core": true
