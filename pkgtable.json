@@ -1,15 +1,16 @@
 {
   "ZenCMD": {
     "name": "ZenCMD",
+    "version": "3.81",
     "author": "FerrariForever95",
     "repository": "core",
     "branch": "main",
-    "file": "bin/ZenCMD/ZenCMD.py",
+    "file": "src/ZenCMD.py",
     "install_path": "/bin/ZenCMD",
-    "version": "3.81",
-    "core": true,
+    "description": "command prompt support for zeno os",
     "dependencies": [],
-    "modules": []
+    "modules": [],
+    "core": true
   },
   "Services": {
     "name": "Services",
